@@ -14,8 +14,8 @@ export async function proxy(request: NextRequest) {
   }
 
   // 🚫 If visiting any /admin path but not logged in or not admin → redirect to /login
-  if (pathname.startsWith("/admin") && token?.role !== "admin") {
-    return NextResponse.redirect(new URL("/login", request.url));
+  if (pathname.startsWith("/admin/dashboard") && token?.role !== "admin") {
+    return NextResponse.redirect(new URL("/admin", request.url));
   }
 
   // ✅ Otherwise, allow normal request
