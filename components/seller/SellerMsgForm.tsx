@@ -1,7 +1,6 @@
 import { msgAction } from "@/app/functions/seller";
 
 export default function SellerMsgForm() {
-  const { success, error } = msgAction();
   return (
     <form action={msgAction} className="space-y-4 w-full max-w-md mx-auto p-4">
       <div>
@@ -47,9 +46,8 @@ export default function SellerMsgForm() {
         type="submit"
         className="w-full bg-[#5cca01] text-white py-2 sm:py-3 rounded-lg transition text-sm sm:text-base font-medium hover:bg-green-700"
       >
-        Register as Seller
+        Send a Message
       </button>
-      {(success || error) && <p>{success || error}</p>}
     </form>
   );
 }
