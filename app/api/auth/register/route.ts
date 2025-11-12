@@ -27,7 +27,7 @@ export async function POST(req: Request) {
       );
 
     // Check existing
-    const existing = await User.findOne({ email });
+    const existing = await User.findOne({ email: email.toLowerCase() });
     if (existing) {
       return NextResponse.json(
         { error: "Account already exists" },
@@ -37,7 +37,7 @@ export async function POST(req: Request) {
     if (role === "user") {
       const newUser = new User({
         role,
-        email,
+        email: email.toLowerCase(),
         password,
       });
       await newUser.save();
@@ -50,7 +50,7 @@ export async function POST(req: Request) {
     if (role === "seller") {
       const newUser = new User({
         role,
-        email,
+        email: email.toLowerCase(),
         sellerName,
         password,
       });
