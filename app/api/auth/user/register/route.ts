@@ -7,9 +7,9 @@ export async function POST(req: Request) {
     await connectToDatabase();
     const { role, email, sellerName, password } = await req.json();
 
-    if (!role || !password) {
+    if (!role || !email) {
       return NextResponse.json(
-        { error: "Role and password required" },
+        { error: "Role and email required" },
         { status: 400 }
       );
     }
@@ -34,19 +34,32 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
+    if (role === "user") {
+      const newUser = new User({
+        role,
+        email,
+        password,
+      });
+      await newUser.save();
+      return NextResponse.json(
+        { message: "User Registered successfully" },
+        { status: 201 }
+      );
+    }
 
-    const newUser = new User({
-      role,
-      email,
-      sellerName,
-      password,
-    });
-
-    await newUser.save();
-    return NextResponse.json(
-      { message: "Registered successfully" },
-      { status: 201 }
-    );
+    if (role === "seller") {
+      const newUser = new User({
+        role,
+        email,
+        sellerName,
+        password,
+      });
+      await newUser.save();
+      return NextResponse.json(
+        { message: "Seller Registered successfully" },
+        { status: 201 }
+      );
+    }
   } catch (error) {
     console.error("Register error:", error);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
