@@ -1,6 +1,5 @@
 import { connectToDatabase } from "./db";
 import User from "../models/User";
-import bcrypt from "bcryptjs";
 
 export async function createAdmin() {
   await connectToDatabase();
@@ -11,8 +10,10 @@ export async function createAdmin() {
     console.warn("⚠️ Missing ADMIN_USERNAME or ADMIN_PASSWORD in .env");
     return;
   }
+
   try {
     const existingAdmin = await User.findOne({ role: "admin" });
+
     if (!existingAdmin) {
       await User.create({
         username,
@@ -21,9 +22,13 @@ export async function createAdmin() {
       });
       console.log("✅ Admin account created automatically");
     } else {
-      console.log("ℹ️ Admin already exists");
+      // Update username and password if changed
+      existingAdmin.username = username;
+      existingAdmin.password = password;
+      await existingAdmin.save();
+      console.log("🔄 Admin credentials updated");
     }
   } catch (error) {
-    console.log(error);
+    console.error("❌ Error creating/updating admin:", error);
   }
 }
