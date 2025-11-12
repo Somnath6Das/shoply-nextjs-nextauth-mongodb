@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import SellerMsgForm from "@/components/seller/SellerMsgForm";
 
 export default function AuthPage() {
   const [activeTab, setActiveTab] = useState("login");
@@ -39,41 +40,6 @@ export default function AuthPage() {
     } catch (err) {
       console.error("Login failed:", err.message);
       setMessage("⚠️ Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // 🟢 Seller Registration Function (axios)
-  const handleSellerRegister = async (e) => {
-    e.preventDefault();
-    const email = e.target.email.value.trim();
-    const messageText = e.target.message.value.trim();
-    const name = e.target.name.value.trim();
-
-    setLoading(true);
-    setMessage("");
-
-    try {
-      const res = await axios.post(
-        "/api/seller-msg",
-        { email, sellerName: name, message: messageText },
-        {
-          // ✅ Prevent Axios from throwing on 400 or 500
-          validateStatus: () => true,
-        }
-      );
-
-      if (res.status === 201) {
-        setMessage("✅ Message sent successfully!");
-        e.target.reset();
-      } else {
-        // show backend error (like “Message already sent”)
-        setMessage(res.data.error || "❌ Something went wrong");
-      }
-    } catch (error) {
-      console.error("Network or unexpected error:", error.message);
-      setMessage("⚠️ Network error. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -198,70 +164,7 @@ export default function AuthPage() {
                 </div>
               </form>
             ) : (
-              <form
-                className="space-y-4 w-full"
-                onSubmit={handleSellerRegister}
-              >
-                <div>
-                  <label className="block text-sm sm:text-base font-medium mb-1">
-                    Email
-                  </label>
-                  <input
-                    name="email"
-                    type="email"
-                    placeholder="Enter your email"
-                    className="w-full border rounded-lg px-3 py-2 text-sm sm:text-base
-                                        focus:outline-none focus:ring-2 focus:ring-[#5cca01]"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm sm:text-base font-medium mb-1">
-                    Seller Name
-                  </label>
-                  <input
-                    name="name"
-                    type="name"
-                    placeholder="Enter your seller name"
-                    className="w-full border rounded-lg px-3 py-2 text-sm sm:text-base
-                                        focus:outline-none focus:ring-2 focus:ring-[#5cca01]"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm sm:text-base font-medium mb-1">
-                    Message
-                  </label>
-                  <textarea
-                    name="message"
-                    placeholder="Enter your message"
-                    rows={2}
-                    className="w-full border rounded-lg px-3 py-2 text-sm sm:text-base
-                                        focus:outline-none focus:ring-2 focus:ring-[#5cca01] resize-none"
-                    required
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className={`w-full flex justify-center items-center gap-2 bg-[#5cca01] text-white py-2 sm:py-3 rounded-lg transition text-sm sm:text-base font-medium ${
-                    loading
-                      ? "opacity-60 cursor-not-allowed"
-                      : "hover:bg-green-700"
-                  }`}
-                >
-                  {loading ? (
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  ) : (
-                    "Register as Seller"
-                  )}
-                </button>
-
-                <p className="text-center text-sm text-gray-600 mt-2">
-                  {message}
-                </p>
-              </form>
+              <SellerMsgForm />
             )}
           </div>
         </div>
