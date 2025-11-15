@@ -1,7 +1,21 @@
-export default function AdminDashboard() {
+// app/admin/messages/page.tsx (server component)
+import SellerMsg from "@/models/SellerMsg";
+import { connectToDatabase } from "@/lib/db";
+
+export default async function MessagesPage() {
+  await connectToDatabase();
+
+  const messages = await SellerMsg.find().sort({ createdAt: -1 });
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center">
-      <h1 className="text-2xl font-bold mb-4">Welcome to Admin Dashboard 👋</h1>
+    <div>
+      {messages.map((msg) => (
+        <div key={msg._id}>
+          <p>{msg.sellerName}</p>
+          <p>{msg.email}</p>
+          <p>{msg.message}</p>
+        </div>
+      ))}
     </div>
   );
 }
