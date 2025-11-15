@@ -1,13 +1,15 @@
 "use client";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 
 export default function AdminLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
+
+  const searchParams = useSearchParams();
+  const error = searchParams.get("error");
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -63,7 +65,7 @@ export default function AdminLogin() {
         >
           Login
         </button>
-        <p>{message}</p>
+        {error && <p style={{ color: "red" }}>{error}</p>}
       </form>
     </div>
   );
