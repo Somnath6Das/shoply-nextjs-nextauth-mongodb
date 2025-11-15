@@ -47,8 +47,9 @@ export async function sellerMsg(
     } else {
       return { errors: {}, error: res.data.error || "Something went wrong" };
     }
-  } catch (err: any) {
-    console.error("Server Action Error:", err.message);
+  } catch (err: unknown) {
+    console.error("Server Action Error:", err);
+
     return { errors: {}, error: "Server error. Try later." };
   }
 }
