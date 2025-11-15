@@ -1,7 +1,6 @@
 import { sellerMsg, FormState } from "@/app/actions/seller";
 import { useActionState } from "react";
 import Form from "next/form";
-import { Submit } from "../Submit";
 
 export default function SellerMsgForm() {
   const initialState: FormState = {
@@ -57,8 +56,13 @@ export default function SellerMsgForm() {
           <p className="text-red-500 text-sm">{state.errors.message}</p>
         )}
       </div>
-      <Submit styles="w-full bg-[#5cca01] text-white py-2 sm:py-3 rounded-lg transition text-sm sm:text-base font-medium hover:bg-green-700" />
-
+      <button
+        type="submit"
+        disabled={isPending}
+        className="w-full bg-[#5cca01] text-white py-2 sm:py-3 rounded-lg transition text-sm sm:text-base font-medium hover:bg-green-700"
+      >
+        Submit
+      </button>
       {state.success && (
         <p className="flex justify-center text-green-500 font-medium">
           {state.success}
