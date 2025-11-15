@@ -1,8 +1,18 @@
-import { msgAction } from "@/app/functions/seller";
+import { sellerMsg, FormState } from "@/app/actions/seller";
+import { useActionState } from "react";
+import Form from "next/form";
+import { Submit } from "../Submit";
 
 export default function SellerMsgForm() {
+  const initialState: FormState = {
+    errors: {},
+  };
+  const [state, formAction, isPending] = useActionState(
+    sellerMsg,
+    initialState
+  );
   return (
-    <form action={msgAction} className="space-y-4 w-full max-w-md mx-auto p-4">
+    <Form action={formAction} className="space-y-4 w-full max-w-md mx-auto p-4">
       <div>
         <label className="block text-sm sm:text-base font-medium mb-1">
           Email
@@ -12,8 +22,10 @@ export default function SellerMsgForm() {
           type="email"
           placeholder="Enter your email"
           className="w-full border rounded-lg px-3 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#5cca01]"
-          required
         />
+        {state.errors.email && (
+          <p className="text-red-500 text-sm">{state.errors.email}</p>
+        )}
       </div>
 
       <div>
@@ -25,8 +37,10 @@ export default function SellerMsgForm() {
           type="text"
           placeholder="Enter your seller name"
           className="w-full border rounded-lg px-3 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#5cca01]"
-          required
         />
+        {state.errors.sellerName && (
+          <p className="text-red-500 text-sm">{state.errors.sellerName}</p>
+        )}
       </div>
 
       <div>
@@ -38,16 +52,23 @@ export default function SellerMsgForm() {
           placeholder="Enter your message"
           rows={2}
           className="w-full border rounded-lg px-3 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#5cca01] resize-none"
-          required
         />
+        {state.errors.message && (
+          <p className="text-red-500 text-sm">{state.errors.message}</p>
+        )}
       </div>
+      <Submit styles="w-full bg-[#5cca01] text-white py-2 sm:py-3 rounded-lg transition text-sm sm:text-base font-medium hover:bg-green-700" />
 
-      <button
-        type="submit"
-        className="w-full bg-[#5cca01] text-white py-2 sm:py-3 rounded-lg transition text-sm sm:text-base font-medium hover:bg-green-700"
-      >
-        Send a Message
-      </button>
-    </form>
+      {state.success && (
+        <p className="flex justify-center text-green-500 font-medium">
+          {state.success}
+        </p>
+      )}
+      {state.error && (
+        <p className="flex justify-center text-red-500 font-medium">
+          {state.error}
+        </p>
+      )}
+    </Form>
   );
 }
