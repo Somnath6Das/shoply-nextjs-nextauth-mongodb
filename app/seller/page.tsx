@@ -37,8 +37,8 @@ export default function AuthPage() {
       } else {
         setMessage(res.data.error || "❌ Invalid credentials");
       }
-    } catch (err) {
-      console.error("Login failed:", err.message);
+    } catch (err: unknown) {
+      console.error("Login failed:", err);
       setMessage("⚠️ Something went wrong. Please try again.");
     } finally {
       setLoading(false);
