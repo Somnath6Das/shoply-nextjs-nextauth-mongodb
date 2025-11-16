@@ -5,14 +5,16 @@ import { useParams } from "next/navigation";
 import { useActionState } from "react";
 
 export default function Reject() {
+  const params = useParams();
   const initialState: FormState = {
     errors: {},
   };
+  const rejectMsgWIthId = RejectMessage.bind(null, Number(params.id ?? 0));
+
   const [state, formAction, isPending] = useActionState(
-    RejectMessage,
+    rejectMsgWIthId,
     initialState
   );
-  const params = useParams();
 
   return <div>{params.id}</div>;
 }
