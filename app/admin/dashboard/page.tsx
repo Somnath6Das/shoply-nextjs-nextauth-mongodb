@@ -55,7 +55,12 @@ export default async function MessagesPage() {
                   </td>
 
                   <td className="p-3 border text-center">
-                    <Link href={`/admin/dashboard/reject/${msg._id}`}>
+                    <Link
+                      href={{
+                        pathname: `/admin/dashboard/reject/${msg._id}`,
+                        query: { seller: msg.sellerName },
+                      }}
+                    >
                       <button
                         // onClick={() => handleRejectClick(msg._id)}
                         className="p-2 rounded-full bg-red-100 hover:bg-red-200 transition"

@@ -2,14 +2,15 @@
 
 import { FormState, RejectMessage } from "@/app/actions/admin";
 import Form from "next/form";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useActionState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowBigLeft, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 export default function Reject() {
   const params = useParams();
+  const searchParams = useSearchParams();
   const router = useRouter();
   const initialState: FormState = {
     errors: {},
@@ -23,15 +24,18 @@ export default function Reject() {
 
   return (
     <Form action={formAction}>
-      <div className="flex items-center mb-3.5 space-x-3">
+      <div className="flex items-center mb-3.5 space-x-2">
         <Link href="/admin/dashboard" className="bg-gray-200 rounded-full p-1">
           <ArrowLeft />
         </Link>
-        <label className="block text-sm sm:text-base font-medium">
-          Please give Reason
+        <label className="flex text-sm sm:text-base font-medium">
+          Please give Reason of rejecting
         </label>
+        <div className="text-blue-500 font-bold">
+          {searchParams.get("seller")}
+        </div>
       </div>
-      <div className="ml-11">
+      <div className="ml-10">
         <div className="space-y-2.5 mb-2">
           <textarea
             name="reason"
