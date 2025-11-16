@@ -2,6 +2,7 @@
 import SellerMsg from "@/models/SellerMsg";
 import { connectToDatabase } from "@/lib/db";
 import { Loader2, Trash2, UserRoundCheck, UserRoundX } from "lucide-react";
+import Link from "next/link";
 
 export default async function MessagesPage() {
   await connectToDatabase();
@@ -52,15 +53,19 @@ export default async function MessagesPage() {
                       <UserRoundCheck className="text-green-600 w-5 h-5" />
                     </button>
                   </td>
+
                   <td className="p-3 border text-center">
-                    <button
-                      // onClick={() => handleRejectClick(msg._id)}
-                      className="p-2 rounded-full bg-red-100 hover:bg-red-200 transition"
-                      title="Reject"
-                    >
-                      <UserRoundX className="text-red-600 w-5 h-5" />
-                    </button>
+                    <Link href={`/admin/dashboard/reject/${msg._id}`}>
+                      <button
+                        // onClick={() => handleRejectClick(msg._id)}
+                        className="p-2 rounded-full bg-red-100 hover:bg-red-200 transition"
+                        title="Reject"
+                      >
+                        <UserRoundX className="text-red-600 w-5 h-5" />
+                      </button>
+                    </Link>
                   </td>
+
                   <td className="p-3 border text-center">
                     <button
                       //  onClick={() => handleDelete(msg._id)}
