@@ -45,13 +45,15 @@ export default async function MessagesPage() {
                   <td className="p-3 border">{msg.sellerName}</td>
                   <td className="p-3 border">{msg.message}</td>
                   <td className="p-3 border text-center">
-                    <button
-                      //    onClick={() => handleAccept(msg._id)}
-                      className="p-2 rounded-full bg-green-100 hover:bg-green-200 transition"
-                      title="Accept"
+                    <Link
+                      href={{
+                        pathname: `/admin/dashboard/accept/${msg._id}`,
+                        query: { seller: msg.sellerName },
+                      }}
+                      className="p-2 rounded-full bg-green-100 hover:bg-green-200 transition inline-flex items-center justify-center"
                     >
                       <UserRoundCheck className="text-green-600 w-5 h-5" />
-                    </button>
+                    </Link>
                   </td>
 
                   <td className="p-3 border text-center">
@@ -60,14 +62,9 @@ export default async function MessagesPage() {
                         pathname: `/admin/dashboard/reject/${msg._id}`,
                         query: { seller: msg.sellerName },
                       }}
+                      className="p-2 rounded-full bg-red-100 hover:bg-red-200 transition inline-flex items-center justify-center"
                     >
-                      <button
-                        // onClick={() => handleRejectClick(msg._id)}
-                        className="p-2 rounded-full bg-red-100 hover:bg-red-200 transition"
-                        title="Reject"
-                      >
-                        <UserRoundX className="text-red-600 w-5 h-5" />
-                      </button>
+                      <UserRoundX className="text-red-600 w-5 h-5" />
                     </Link>
                   </td>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { FormState, RejectMessage } from "@/app/actions/admin";
+import { FormState, AcceptMessage } from "@/app/actions/admin";
 import Form from "next/form";
 import { useParams, useSearchParams } from "next/navigation";
 import { useActionState } from "react";
@@ -8,45 +8,38 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
-export default function Reject() {
+export default function Accept() {
   const params = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
   const initialState: FormState = {
     errors: {},
   };
-  const rejectMsgWIthId = RejectMessage.bind(null, params.id as string);
+  const acceptMsgWIthId = AcceptMessage.bind(null, params.id as string);
 
   const [state, formAction, isPending] = useActionState(
-    rejectMsgWIthId,
+    acceptMsgWIthId,
     initialState
   );
 
   return (
     <Form action={formAction}>
-      <div className="flex items-center mb-3.5 space-x-2">
-        <Link href="/admin/dashboard" className="bg-gray-200 rounded-full p-1">
+      <div className="flex items-center mb-3.5">
+        <Link
+          href="/admin/dashboard"
+          className="bg-gray-200 rounded-full p-1 mr-2"
+        >
           <ArrowLeft />
         </Link>
-        <label className="flex text-sm sm:text-base font-medium">
-          Please give Reason of rejecting
+        <label className="flex font-medium gap-2 text-[20px]">
+          Do you want to add
+          <div className="text-blue-500 font-bold">
+            {searchParams.get("seller")}
+          </div>
+          as a seller?
         </label>
-        <div className="text-blue-500 font-bold">
-          {searchParams.get("seller")}
-        </div>
       </div>
-      <div className="ml-10">
-        <div className="space-y-2.5 mb-2">
-          <textarea
-            name="reason"
-            placeholder="Enter the reason"
-            rows={2}
-            className="w-2xl border rounded-lg px-3 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#5472f7] resize-none"
-          />
-          {state.errors.reason && (
-            <p className="text-red-500 text-sm">{state.errors.reason}</p>
-          )}
-        </div>
+      <div className="ml-10 mt-8">
         <div className="flex w-80 h-12 space-x-2">
           <button
             onClick={() => router.back()}

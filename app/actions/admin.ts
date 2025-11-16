@@ -1,7 +1,6 @@
 "use server";
 
 import axios from "axios";
-import { redirect } from "next/navigation";
 
 export type Errors = {
   reason?: string;
@@ -43,3 +42,8 @@ export async function RejectMessage(
     return { errors: {}, error: "Server error. Try later." };
   }
 }
+export async function AcceptMessage(
+  id: string,
+  prevState: FormState,
+  formData: FormData
+): Promise<FormState> {}
