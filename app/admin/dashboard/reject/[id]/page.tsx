@@ -12,7 +12,7 @@ export default function Reject() {
   const initialState: FormState = {
     errors: {},
   };
-  const rejectMsgWIthId = RejectMessage.bind(null, Number(params.id ?? 0));
+  const rejectMsgWIthId = RejectMessage.bind(null, params.id as string);
 
   const [state, formAction, isPending] = useActionState(
     rejectMsgWIthId,
@@ -51,17 +51,18 @@ export default function Reject() {
           Submit
         </button>
       </div>
-
-      {state.success && (
-        <p className="flex justify-center text-green-500 font-medium">
-          {state.success}
-        </p>
-      )}
-      {state.error && (
-        <p className="flex justify-center text-red-500 font-medium">
-          {state.error}
-        </p>
-      )}
+      <div className="flex w-2xl justify-center mt-2">
+        {state.success && (
+          <p className="flex justify-center items-center text-green-500 font-medium">
+            {state.success}
+          </p>
+        )}
+        {state.error && (
+          <p className="flex justify-center items-center text-red-500 font-medium">
+            {state.error}
+          </p>
+        )}
+      </div>
     </Form>
   );
 }

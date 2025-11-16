@@ -14,7 +14,7 @@ export type FormState = {
 };
 
 export async function RejectMessage(
-  id: number,
+  id: string,
   prevState: FormState,
   formData: FormData
 ): Promise<FormState> {
@@ -28,5 +28,18 @@ export async function RejectMessage(
     return { errors };
   }
   try {
-  } catch (error) {}
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/seller-msg/reject`,
+      { id, reason },
+      { validateStatus: () => true } // don’t throw on 400+
+    );
+    if (res.status === 201) {
+      return { errors: {}, success: res.data.message };
+    } else {
+      return { errors: {}, error: res.data.error || "Something went wrong" };
+    }
+  } catch (err) {
+    console.error("Server Action Error:", err);
+    return { errors: {}, error: "Server error. Try later." };
+  }
 }
