@@ -1,20 +1,19 @@
 import Logout from "@/components/Logout";
 import Image from "next/image";
-
 import { ReactNode } from "react";
 import Leftbar from "@/components/Leftbar";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   const menuItems = [
     { name: "Messages", icon: "MessageSquarePlus", path: "/admin/dashboard" },
-
     { name: "Sellers", icon: "UsersRound", path: "/admin/dashboard/sellers" },
   ];
+
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      {/* ---------- HEADER ---------- */}
-      <header className="flex justify-between items-center px-6 py-4 bg-white shadow-md">
-        {/* Left: Logo + Admin text */}
+    // Layout takes full height and prevents layout scrolling
+    <div className="h-screen flex flex-col overflow-hidden bg-gray-50">
+      {/* HEADER (fixed) */}
+      <header className="flex-none flex justify-between items-center px-6 py-4 bg-white shadow-md">
         <div className="flex items-center gap-3">
           <Image
             src="/images/logo.png"
@@ -27,18 +26,20 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
             Admin
           </h1>
         </div>
-
-        {/* Right: Logout button */}
         <Logout path={"/admin"} />
       </header>
 
-      {/* ---------- BODY ---------- */}
-      <div className="flex flex-1">
-        {/* LEFT SIDEBAR */}
-        <Leftbar menuItems={menuItems} />
+      {/* BODY */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* SIDEBAR (full height, never reduced) */}
+        <div className="h-full flex-none">
+          <Leftbar menuItems={menuItems} />
+        </div>
 
-        {/* MAIN CONTENT */}
-        <main className="flex-1 p-6 bg-gray-50">{children}</main>
+        {/* MAIN CONTENT (scrollable only here) */}
+        <main className="flex-1 h-full overflow-y-auto p-6 bg-gray-50">
+          {children}
+        </main>
       </div>
     </div>
   );

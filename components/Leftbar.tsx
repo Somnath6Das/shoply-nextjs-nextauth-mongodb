@@ -23,7 +23,7 @@ export default function Leftbar({ menuItems }: LeftbarProps) {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 bg-white border-r shadow-sm p-4 flex flex-col">
+    <aside className="w-64 h-full bg-white border-r shadow-sm p-4 flex flex-col">
       <nav className="flex flex-col gap-2 mt-4">
         {menuItems.map(({ name, icon, path }) => {
           const Icon = iconMap[icon];
