@@ -56,16 +56,12 @@ export default function Accept() {
             Submit
           </button>
         </div>
-        <div className="flex w-2xl justify-center mt-2">
+        <div className="flex w-2xl justify-start items-center mt-2">
           {state.success && (
-            <p className="flex justify-center items-center text-green-500 font-medium">
-              {state.success}
-            </p>
+            <p className="flex  text-green-500 font-medium">{state.success}</p>
           )}
           {state.error && (
-            <p className="flex justify-center items-center text-red-500 font-medium">
-              {state.error}
-            </p>
+            <p className="flex  text-red-500 font-medium">{state.error}</p>
           )}
         </div>
       </div>
