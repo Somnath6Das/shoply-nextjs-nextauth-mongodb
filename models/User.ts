@@ -25,18 +25,5 @@ const UserSchema = new Schema<IUser>(
   { timestamps: true }
 );
 
-// Prevent hashing if password is empty or untouched
-UserSchema.pre("save", async function (next) {
-  if (!this.password || this.password.trim() === "") {
-    return next();
-  }
-
-  if (this.isModified("password")) {
-    this.password = await bcrypt.hash(this.password, 10);
-  }
-
-  next();
-});
-
 const User = models?.User || model<IUser>("User", UserSchema);
 export default User;

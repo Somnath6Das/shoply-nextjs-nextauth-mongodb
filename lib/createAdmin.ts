@@ -1,5 +1,6 @@
 import { connectToDatabase } from "./db";
 import User from "../models/User";
+import bcrypt from "bcryptjs";
 
 export async function createAdmin() {
   await connectToDatabase();
@@ -13,11 +14,11 @@ export async function createAdmin() {
 
   try {
     const existingAdmin = await User.findOne({ role: "admin" });
-
+    const hashedPassword = await bcrypt.hash(password, 10);
     if (!existingAdmin) {
       await User.create({
         username,
-        password,
+        password: hashedPassword,
         role: "admin",
       });
       console.log("✅ Admin account created automatically");

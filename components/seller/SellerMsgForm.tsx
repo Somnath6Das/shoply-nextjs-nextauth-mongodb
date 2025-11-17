@@ -59,9 +59,16 @@ export default function SellerMsgForm() {
       <button
         type="submit"
         disabled={isPending}
-        className="w-full bg-[#5cca01] text-white py-2 sm:py-3 rounded-lg transition text-sm sm:text-base font-medium hover:bg-green-700"
+        className={`
+    w-full py-2 rounded-lg text-white transition-all duration-200
+    ${
+      isPending
+        ? "bg-gray-400 cursor-not-allowed"
+        : "bg-green-600 hover:bg-green-700"
+    }
+  `}
       >
-        Submit
+        {isPending ? "Send..." : "Message Sent"}
       </button>
       {state.success && (
         <p className="flex justify-center text-green-500 font-medium">
