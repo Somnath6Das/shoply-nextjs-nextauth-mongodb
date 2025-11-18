@@ -69,13 +69,15 @@ export default async function MessagesPage() {
                   </td>
 
                   <td className="p-3 border text-center">
-                    <button
-                      //  onClick={() => handleDelete(msg._id)}
-                      className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition"
-                      title="Delete"
+                    <Link
+                      href={{
+                        pathname: `/admin/dashboard/delete/${msg._id}`,
+                        query: { seller: msg.sellerName },
+                      }}
+                      className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition inline-flex items-center justify-center"
                     >
                       <Trash2 className="text-gray-700 w-5 h-5" />
-                    </button>
+                    </Link>
                   </td>
                 </tr>
               ))
