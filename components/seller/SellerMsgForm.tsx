@@ -1,3 +1,4 @@
+"use client";
 import { sellerMsg, FormState } from "@/app/actions/seller";
 import { useActionState } from "react";
 import Form from "next/form";
