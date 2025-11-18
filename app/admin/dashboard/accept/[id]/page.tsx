@@ -51,7 +51,11 @@ export default function Accept() {
           <button
             type="submit"
             disabled={isPending}
-            className="w-full bg-[#3b5ae4] text-white py-2 sm:py-3 rounded-lg transition text-sm sm:text-base font-medium hover:bg-[#1033cf]"
+            className={`w-full ${
+              isPending ? "bg-gray-300" : "bg-[#3b5ae4]"
+            } text-white py-2 sm:py-3 rounded-lg transition text-sm sm:text-base font-medium ${
+              isPending ? "hover:bg-gray-300" : "hover:bg-[#1033cf]"
+            }`}
           >
             Submit
           </button>

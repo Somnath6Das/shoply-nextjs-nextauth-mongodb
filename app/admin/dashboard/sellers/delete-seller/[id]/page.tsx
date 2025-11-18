@@ -51,7 +51,9 @@ export default function DeleteSellerAccount() {
           <button
             type="submit"
             disabled={isPending}
-            className="w-full bg-[#f43e3e] text-white py-2 sm:py-3 rounded-lg transition text-sm sm:text-base font-medium hover:bg-[#f31414]"
+            className={`w-full ${
+              isPending ? "bg-gray-400" : "bg-[#f43e3e]"
+            } text-white py-2 sm:py-3 rounded-lg transition text-sm sm:text-base font-medium hover:bg-[#f31414]`}
           >
             Ok
           </button>

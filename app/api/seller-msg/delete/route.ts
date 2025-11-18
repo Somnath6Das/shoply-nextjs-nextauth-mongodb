@@ -26,7 +26,7 @@ export async function POST(req: Request) {
 
     // Delete document
     const res = await SellerMsg.findByIdAndDelete(id);
-    console.log(res.data, res.status);
+    // console.log(res.data, res.status);
 
     return NextResponse.json(
       { message: "Seller message deleted successfully" },

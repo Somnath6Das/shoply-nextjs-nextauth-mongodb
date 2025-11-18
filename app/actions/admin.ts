@@ -1,6 +1,7 @@
 "use server";
 
 import axios from "axios";
+import { redirect } from "next/navigation";
 
 export type Errors = {
   reason?: string;
@@ -96,6 +97,7 @@ export async function DeleteSeller(
       { id },
       { validateStatus: () => true } // don’t throw on 400+
     );
+
     if (res.status === 200) {
       return { errors: {}, success: res.data.message };
     } else {
