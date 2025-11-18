@@ -1,18 +1,48 @@
+"use client";
 import Link from "next/link";
+import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
+import Image from "next/image";
 
 export default function SellerLogin() {
+  const [identifier, setIdentifier] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const searchParams = useSearchParams();
+  const error = searchParams.get("error");
+  const callbackUrl = searchParams.get("callbackUrl") || "/seller/dashboard";
+  async function handleLogin(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    const result = await signIn("credentials", {
+      redirect: true,
+      callbackUrl, // specify where to redirect
+      identifier: identifier.trim(),
+      password,
+    });
+
+    if (result?.error) {
+      console.log(result.error);
+    } else {
+      console.log("Login Successfully"); // redirect after login
+    }
+  }
   return (
-    <form className="space-y-4 w-full">
+    <form className="space-y-4 w-full" onSubmit={handleLogin}>
       <div>
         <label className="block text-sm sm:text-base font-medium mb-1">
           Email
         </label>
         <input
           name="email"
-          type="email"
+          type="text"
+          value={identifier}
+          onChange={(e) => setIdentifier(e.target.value)}
           placeholder="Enter your email"
           className="w-full border rounded-lg px-3 py-2 text-sm sm:text-base
                                         focus:outline-none focus:ring-2 focus:ring-[#5e3e89]"
+          required
         />
       </div>
       <div>
@@ -22,25 +52,28 @@ export default function SellerLogin() {
         <input
           name="password"
           type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           placeholder="Enter your password"
           className="w-full border rounded-lg px-3 py-2 text-sm sm:text-base
                                         focus:outline-none focus:ring-2 focus:ring-[#5e3e89]"
+          required
         />
       </div>
-      {/* <button
-          type="submit"
-          //   disabled={isPenging}
-          className={`w-full flex justify-center items-center gap-2 bg-[#5e3e89] text-white py-2 sm:py-3 rounded-lg transition text-sm sm:text-base font-medium ${
-            isPenging ? "opacity-60 cursor-not-allowed" : "hover:bg-[#392655]"
-          }`}
-        >
-          {isPenging ? (
-            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-          ) : (
-            "Login"
-          )}
-        </button> */}
-
+      <button
+        type="submit"
+        disabled={loading}
+        className={`w-full flex justify-center items-center gap-2 bg-[#5e3e89] text-white py-2 sm:py-3 rounded-lg transition text-sm sm:text-base font-medium ${
+          loading ? "opacity-60 cursor-not-allowed" : "hover:bg-[#392655]"
+        }`}
+      >
+        {loading ? (
+          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+        ) : (
+          "Login"
+        )}
+      </button>
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <div className="text-center">
         <Link
           href="/seller/forget-password"

@@ -10,13 +10,13 @@ export default function AdminLogin() {
 
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
-
+  const callbackUrl = searchParams.get("callbackUrl") || "/admin/dashboard";
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
 
     const result = await signIn("credentials", {
       redirect: true,
-      callbackUrl: "/admin/dashboard", // specify where to redirect
+      callbackUrl, // specify where to redirect
       identifier: username,
       password,
     });
