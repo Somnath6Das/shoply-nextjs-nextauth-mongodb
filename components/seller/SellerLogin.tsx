@@ -32,14 +32,14 @@ export default function SellerLogin() {
     <form className="space-y-4 w-full" onSubmit={handleLogin}>
       <div>
         <label className="block text-sm sm:text-base font-medium mb-1">
-          Email
+          Email or Seller name
         </label>
         <input
           name="email"
           type="text"
           value={identifier}
           onChange={(e) => setIdentifier(e.target.value)}
-          placeholder="Enter your email"
+          placeholder="Enter your email or seller name"
           className="w-full border rounded-lg px-3 py-2 text-sm sm:text-base
                                         focus:outline-none focus:ring-2 focus:ring-[#5e3e89]"
           required

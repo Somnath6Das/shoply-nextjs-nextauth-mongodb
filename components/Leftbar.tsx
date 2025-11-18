@@ -2,11 +2,23 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MessageSquarePlus, UsersRound } from "lucide-react";
-
-const iconMap: Record<string, React.ComponentType<{ size?: number }>> = {
+import {
   MessageSquarePlus,
   UsersRound,
+  ShoppingCart,
+  Package,
+  Grid2x2PlusIcon,
+} from "lucide-react";
+import { ComponentType } from "react";
+
+const adminMap: Record<string, React.ComponentType<{ size?: number }>> = {
+  MessageSquarePlus,
+  UsersRound,
+};
+const sellerMap: Record<string, React.ComponentType<{ size?: number }>> = {
+  ShoppingCart,
+  Package,
+  Grid2x2PlusIcon,
 };
 
 type Menu = {
@@ -21,12 +33,14 @@ type LeftbarProps = {
 
 export default function Leftbar({ menuItems }: LeftbarProps) {
   const pathname = usePathname();
+  const sellerRoot = pathname.split("/").slice(0, 2).join("/");
 
   return (
     <aside className="w-64 h-full bg-white border-r shadow-sm p-4 flex flex-col">
       <nav className="flex flex-col gap-2 mt-4">
         {menuItems.map(({ name, icon, path }) => {
-          const Icon = iconMap[icon];
+          const Icon =
+            sellerRoot === "/seller" ? sellerMap[icon] : adminMap[icon];
 
           return (
             <Link
