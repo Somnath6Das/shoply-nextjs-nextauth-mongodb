@@ -84,3 +84,25 @@ export async function DeleteMessage(
     return { errors: {}, error: "Server error. Try later." };
   }
 }
+
+export async function DeleteSeller(
+  id: string,
+  prevState: FormState,
+  formData: FormData
+): Promise<FormState> {
+  try {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/delete-seller`,
+      { id },
+      { validateStatus: () => true } // don’t throw on 400+
+    );
+    if (res.status === 200) {
+      return { errors: {}, success: res.data.message };
+    } else {
+      return { errors: {}, error: res.data.error || "Something went wrong" };
+    }
+  } catch (err) {
+    console.error("Server Action Error:", err);
+    return { errors: {}, error: "Server error. Try later." };
+  }
+}

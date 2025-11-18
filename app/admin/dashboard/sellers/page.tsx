@@ -1,5 +1,6 @@
 import User from "@/models/User";
 import { CheckCircle, Info, Trash2 } from "lucide-react";
+import Link from "next/link";
 
 export default async function SellerAccount() {
   const sellers = await User.find({ role: "seller" }).sort({ createdAt: -1 });
@@ -36,13 +37,16 @@ export default async function SellerAccount() {
                   <td className="py-3 px-4 text-center">
                     {new Date(seller.createdAt).toLocaleString()}
                   </td>
-                  <td className="py-3 px-4 text-center">
-                    <button
-                      // onClick={() => confirmDelete(seller._id)}
-                      className="text-red-500 hover:text-red-700"
+                  <td className="p-3 border text-center">
+                    <Link
+                      href={{
+                        pathname: `/admin/dashboard/sellers/delete-seller/${seller._id}`,
+                        query: { seller: seller.username },
+                      }}
+                      className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition inline-flex items-center justify-center"
                     >
-                      <Trash2 size={18} />
-                    </button>
+                      <Trash2 className="text-red-500 hover:text-red-700 w-5 h-5" />
+                    </Link>
                   </td>
                 </tr>
               ))
