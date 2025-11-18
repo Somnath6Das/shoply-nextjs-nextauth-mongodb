@@ -8,7 +8,9 @@ export default async function SellerAccount() {
 
   return (
     <div className="p-6">
-      <h1 className="text-xl font-semibold mb-4">Sellers</h1>
+      <h1 className="flex justify-center text-2xl font-semibold mb-4">
+        Sellers
+      </h1>
 
       <div className="overflow-x-auto bg-white shadow rounded-lg">
         <table className="w-full border-collapse">
