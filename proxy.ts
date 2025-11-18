@@ -18,11 +18,20 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/admin", request.url));
   }
 
+  // seller
+  if (pathname === "/seller" && token?.role === "seller") {
+    return NextResponse.redirect(new URL("/seller/dashboard", request.url));
+  }
+
+  if (pathname.startsWith("/seller/dashboard") && token?.role !== "seller") {
+    return NextResponse.redirect(new URL("/seller", request.url));
+  }
+
   // ✅ Otherwise, allow normal request
   return NextResponse.next();
 }
 
 // Apply proxy to all /admin routes
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/admin/:path*", "/seller/:path*"],
 };
