@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
 import User from "@/models/User";
 import { Types } from "mongoose";
-import { redirect } from "next/navigation";
 
 export async function POST(req: Request) {
   try {

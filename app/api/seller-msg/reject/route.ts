@@ -47,7 +47,7 @@ export async function POST(req: Request) {
         <p>We regret to inform you that your seller account request has been rejected for the following reason:</p>
         <blockquote style="color:#555;border-left:4px solid #f00;padding-left:10px;">${reason}</blockquote>
         <p>If you believe this is a mistake or want to reapply, please contact our support team.</p>
-        <p>Thank you,<br/>E-commerce Support Team</p>
+        <p>Thank you,<br/>Shoply Support Team</p>
       `,
     });
     return NextResponse.json(

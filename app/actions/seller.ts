@@ -103,3 +103,44 @@ export async function SetPassword(
     return { errors: {}, error: "Server error. Try later." };
   }
 }
+export type EmailErrors = {
+  email?: string;
+};
+export type EmailState = {
+  errors: EmailErrors;
+  success?: string;
+  error?: string;
+};
+//seller set password
+export async function ForgetPassword(
+  prevState: EmailState,
+  formData: FormData
+): Promise<EmailState> {
+  const email = formData.get("email") as string;
+
+  const errors: EmailErrors = {};
+  if (!email) {
+    errors.email = "Email is required!";
+  }
+
+  if (Object.keys(errors).length > 0) {
+    return { errors };
+  }
+  try {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/forget-password`,
+      { email },
+      { validateStatus: () => true }
+    );
+
+    console.log("API Response:", res.status, res.data);
+    if (res.status === 200) {
+      return { errors: {}, success: res.data.message };
+    } else {
+      return { errors: {}, error: res.data.error || "Something went wrong" };
+    }
+  } catch (err) {
+    console.error("Server Action Error:", err);
+    return { errors: {}, error: "Server error. Try later." };
+  }
+}

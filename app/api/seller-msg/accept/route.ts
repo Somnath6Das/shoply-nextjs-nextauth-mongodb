@@ -93,7 +93,7 @@ export async function POST(req: Request) {
 
             <hr style="margin-top: 24px; border: none; border-top: 1px solid #eee;">
             <p style="text-align: center; font-size: 12px; color: #aaa; margin-top: 12px;">
-              &copy; ${new Date().getFullYear()} E-Commerce. All rights reserved.
+              &copy; ${new Date().getFullYear()} Shoply. All rights reserved.
             </p>
           </div>
         </div>
