@@ -1,9 +1,24 @@
+"use client";
+
+import { handleAddSub, handleDeleteSub } from "@/app/actions/category";
 import { useState } from "react";
 
-export default function SelectCategory({ categories }) {
+type Categories = {
+  _id: string;
+  main: string;
+  subs: string[];
+};
+
+export default function SelectCategory({
+  categories,
+}: {
+  categories: Categories[];
+}) {
   const [mainCategory, setMainCategory] = useState("");
   const [subCategory, setSubCategory] = useState("");
   const [newSub, setNewSub] = useState("");
+  // ✅ Add subcategory
+
   return (
     <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-xl p-6 space-y-6">
       <div className="border rounded-xl p-5 space-y-4">
@@ -45,7 +60,10 @@ export default function SelectCategory({ categories }) {
                 className="border rounded-md px-3 py-2 flex-1 focus:ring-2 focus:ring-green-400"
               />
               <button
-                onClick={handleAddSub}
+                onClick={() => {
+                  handleAddSub(mainCategory, newSub);
+                  setNewSub("");
+                }}
                 className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
               >
                 Add Sub
