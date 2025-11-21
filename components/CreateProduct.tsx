@@ -12,7 +12,16 @@ type Categories = {
   main: string;
   subs: string[];
 };
-
+type OptionType = {
+  name: string;
+  values: string[];
+};
+type VariantType = {
+  combination: Record<string, string>;
+  price: string;
+  stock: string;
+  images: string[];
+};
 export default function CreateProductPage({
   categories,
 }: {
@@ -26,8 +35,8 @@ export default function CreateProductPage({
   const [subCategory, setSubCategory] = useState("");
   const [newMain, setNewMain] = useState("");
   const [newSub, setNewSub] = useState("");
-  const [options, setOptions] = useState([]);
-  const [variants, setVariants] = useState([]);
+  const [options, setOptions] = useState<OptionType[]>([]);
+  const [variants, setVariants] = useState<VariantType[]>([]);
   const [allImages, setAllImages] = useState<string[]>([]);
 
   // -----------------------------
