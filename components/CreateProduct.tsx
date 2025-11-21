@@ -76,7 +76,7 @@ export default function CreateProductPage({
       { combination: {}, price: "", stock: "", images: [] },
     ]);
   // ✅ Handle variant image selection
-  const handleVariantImageSelect = (vi, imageUrl) => {
+  const handleVariantImageSelect = (vi: number, imageUrl: string) => {
     const updated = [...variants];
     updated[vi].images = [imageUrl];
     setVariants(updated);
