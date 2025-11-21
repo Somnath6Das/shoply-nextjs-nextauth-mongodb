@@ -13,7 +13,8 @@ export async function addMainCategory(formData: FormData) {
 
   await axios.post(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/products/categories`,
-    { main: formatted }
+    { main: formatted },
+    { validateStatus: () => true }
   );
 
   revalidatePath("/seller/dashboard/categories");
@@ -39,7 +40,8 @@ export async function handleAddSub(main: string, sub: string) {
 
   await axios.post(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/products/categories`,
-    { main: formattedMain, sub: formattedSub }
+    { main: formattedMain, sub: formattedSub },
+    { validateStatus: () => true }
   );
 
   revalidatePath("/seller/dashboard/categories");

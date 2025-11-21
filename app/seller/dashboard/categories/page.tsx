@@ -2,6 +2,7 @@ import AddCategory from "@/components/seller/AddCategory";
 import SelectCategory from "@/components/seller/SelectCatetory";
 import { connectToDatabase } from "@/lib/db";
 import Category from "@/models/Category";
+
 type SimpleCategory = {
   _id: string;
   main: string;
@@ -10,7 +11,8 @@ type SimpleCategory = {
 export default async function Categories() {
   await connectToDatabase();
 
-  const categories = await Category.find().lean();
+  // const categories = await Category.find().lean();
+  const categories = await Category.find().sort({ main: 1 }).lean();
 
   const simple: SimpleCategory[] = categories.map((cat: any) => ({
     _id: cat._id.toString(),
