@@ -39,10 +39,6 @@ export default function CreateProductPage({
   const [variants, setVariants] = useState<VariantType[]>([]);
   const [allImages, setAllImages] = useState<string[]>([]);
 
-  // -----------------------------
-  // CATEGORY ACTIONS
-  // -----------------------------
-
   const handleAddMain = async () => {
     if (!newMain.trim()) return alert("Enter main category");
 
