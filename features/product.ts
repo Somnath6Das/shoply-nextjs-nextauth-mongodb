@@ -4,6 +4,7 @@ import axios from "axios";
 export async function createProductAction(formData: {
   name: string;
   description: string;
+  deliveryInDays: string;
   mainCategory: string;
   subCategory: string;
   options: { name: string; values: string[] }[];
@@ -18,6 +19,7 @@ export async function createProductAction(formData: {
   const {
     name,
     description,
+    deliveryInDays,
     mainCategory,
     subCategory,
     options,
@@ -34,6 +36,7 @@ export async function createProductAction(formData: {
       {
         name,
         description,
+        deliveryInDays,
         category: { main: formattedMain, sub: formattedSub },
         options,
         variants,

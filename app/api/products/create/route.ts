@@ -26,6 +26,7 @@ export async function POST(req: Request) {
       sellerId: session.user.id,
       name: body.name,
       description: body.description,
+      deliveryInDays: body.deliveryInDays,
       category: body.category,
       options: body.options,
       variants: body.variants,

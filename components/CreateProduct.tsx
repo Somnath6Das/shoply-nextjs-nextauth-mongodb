@@ -31,6 +31,7 @@ export default function CreateProductPage({
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [deliveryInDays, setDeliveryInDays] = useState("");
   const [mainCategory, setMainCategory] = useState("");
   const [subCategory, setSubCategory] = useState("");
   const [newMain, setNewMain] = useState("");
@@ -91,6 +92,7 @@ export default function CreateProductPage({
     await createProductAction({
       name,
       description,
+      deliveryInDays,
       mainCategory,
       subCategory,
       options,
@@ -119,7 +121,13 @@ export default function CreateProductPage({
         onChange={(e) => setDescription(e.target.value)}
         className="w-full border border-gray-300 rounded-md px-3 py-2 h-24"
       />
-
+      <input
+        type="number"
+        placeholder="Delivery in days"
+        value={deliveryInDays}
+        onChange={(e) => setDeliveryInDays(e.target.value)}
+        className="w-full border border-gray-300 rounded-md px-3 py-2"
+      />
       {/* CATEGORY MANAGEMENT UI — unchanged */}
       <div className="border rounded-md p-4">
         <h3 className="font-semibold mb-3 text-lg">Category Management</h3>
@@ -271,7 +279,7 @@ export default function CreateProductPage({
           />
           <input
             type="text"
-            placeholder="Values (comma separated or hyphen seperated) "
+            placeholder="Values (comma separated)"
             value={opt.values.join(",")}
             onChange={(e) => {
               const updated = [...options];

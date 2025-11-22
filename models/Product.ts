@@ -17,7 +17,8 @@ const ProductSchema = new Schema(
     sellerId: { type: String, required: true },
 
     name: { type: String, required: true },
-    description: { type: String, required: true },
+    description: { type: String },
+    deliveryInDays: { type: String },
 
     category: {
       main: { type: String, required: true },
