@@ -6,7 +6,7 @@ type SimpleCategory = {
   main: string;
   subs: string[];
 };
-import CreateProduct from "@/components/CreateProduct"; // Adjust the import path as needed
+import CreateProduct from "@/components/seller/product/CreateProduct"; // Adjust the import path as needed
 
 export default async function CreateProductPage() {
   await connectToDatabase();
