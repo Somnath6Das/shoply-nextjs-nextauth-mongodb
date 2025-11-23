@@ -8,6 +8,7 @@ import { connectToDatabase } from "@/lib/db";
 import { ProductListButtons } from "@/components/seller/product/ProductListButtons";
 import { ProductListPagination } from "@/components/seller/product/ProductListPagination";
 import Image from "next/image";
+import { PackagePlus } from "lucide-react";
 
 type Props = {
   searchParams?: { page?: string };
@@ -36,12 +37,15 @@ export default async function ProductsListPage({ searchParams }: Props) {
     .lean();
   return (
     <div className="p-4">
-      <Link
-        href="/seller/dashboard/products/create"
-        className="bg-[#5e3e89] text-white px-4 py-2 rounded-lg hover:bg-[#4a2f6b] transition-all duration-200"
-      >
-        Create Product
-      </Link>
+      <div className="mb-4">
+        <Link
+          href="/seller/dashboard/products/create"
+          className="flex justify-center w-48 bg-[#06991c] text-white px-4 py-2 rounded-lg hover:bg-[#1d571e] transition-all duration-200 gap-3"
+        >
+          <PackagePlus /> Create Product
+        </Link>
+      </div>
+
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-semibold">My Products</h2>
         <div className="text-sm text-gray-600">{`${totalCount} total`}</div>
@@ -166,7 +170,12 @@ export default async function ProductsListPage({ searchParams }: Props) {
           </tbody>
         </table>
       </div>
-      {/* Pagination */}
+      <div className="mt-4 flex items-center justify-between">
+        <div className="text-sm text-gray-600">
+          Page {page} of {totalPages}
+        </div>
+        <ProductListPagination page={page} totalPages={totalPages} />
+      </div>
     </div>
   );
 }
