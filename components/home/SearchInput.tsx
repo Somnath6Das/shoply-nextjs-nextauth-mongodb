@@ -28,7 +28,7 @@ export default function SearchInput({ categories = null }) {
             border ${searchText ? "border-green-500" : "border-gray-300"}
             bg-white/50 backdrop-blur-sm items-stretch transition-colors duration-200`}
     >
-      <div className="flex items-center hover:bg-green-50">
+      <div className="flex items-center">
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
@@ -57,7 +57,7 @@ export default function SearchInput({ categories = null }) {
 
       <button
         onClick={handleSearch}
-        className="px-3 flex items-center justify-center hover:bg-green-50 transition-colors"
+        className="px-3 flex items-center justify-center transition-colors"
       >
         <Search className="w-5 h-5 text-black hover:text-green-600" />
       </button>

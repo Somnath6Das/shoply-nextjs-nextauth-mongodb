@@ -2,6 +2,7 @@ import Image from "next/image";
 import Address from "./Address";
 import SearchInput from "./SearchInput";
 import { LogIn, ShoppingCart } from "lucide-react";
+import Link from "next/link";
 
 export default function Navbar() {
   return (
@@ -19,14 +20,20 @@ export default function Navbar() {
       </div>
       <Address />
       <SearchInput />
-      <button className="flex items-center bg-gray-200/40 rounded-xl px-3 py-1 space-x-2 hover:bg-green-50 hover:text-green-600 transition">
+      <Link
+        href="/login"
+        className="flex items-center bg-gray-200/40 rounded-xl px-3 py-1 space-x-2 hover:bg-green-50 hover:text-green-600 transition"
+      >
         <LogIn className="w-5 h-5" />
         <span className="text-sm font-medium">Login</span>
-      </button>
-      <div className="flex items-center bg-gray-200/40 rounded-xl px-3 py-1 space-x-2 hover:bg-green-50 hover:text-green-600 transition-colors duration-200 cursor-pointer">
+      </Link>
+      <Link
+        href="cart"
+        className="flex items-center bg-gray-200/40 rounded-xl px-3 py-1 space-x-2 hover:bg-green-50 hover:text-green-600 transition-colors duration-200 cursor-pointer"
+      >
         <ShoppingCart className="w-5 h-5 transition-colors duration-200" />
         <span className="text-sm font-medium">Cart</span>
-      </div>
+      </Link>
     </nav>
   );
 }
