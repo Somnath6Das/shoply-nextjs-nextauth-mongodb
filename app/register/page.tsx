@@ -35,7 +35,9 @@ export default function Register() {
     setOtpEnabled(false); // disable before checking
 
     try {
-      const res = await axios.post("/api/user/send-otp", { email });
+      const res = await axios.post("/api/user/register/send-otp", {
+        email,
+      });
       setMessage("✅ OTP sent to your email address");
       setOtpEnabled(true); // ✅ enable OTP after success
     } catch (error: any) {
@@ -59,7 +61,10 @@ export default function Register() {
 
     setOtpMessage("");
     try {
-      const res = await axios.post("/api/user/verify-otp", { email, otp });
+      const res = await axios.post("/api/user/register/verify-otp", {
+        email,
+        otp,
+      });
       if (res.data.valid) {
         setOtpVerified(true);
         setOtpMessage("✅ OTP verified");
@@ -87,7 +92,10 @@ export default function Register() {
     }
 
     try {
-      const res = await axios.post("/api/user/register", { email, password });
+      const res = await axios.post("/api/user/register/submit", {
+        email,
+        password,
+      });
       setRegMessage("✅ User registered successfully");
     } catch (error: any) {
       if (error.response?.status === 409) {
@@ -99,7 +107,7 @@ export default function Register() {
   };
   return (
     <LoginView>
-      <Form action={handleSubmit} className="flex flex-col gap-3">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         {/* Email input with send OTP */}
         <div className="relative flex items-center ml-3 mx-3">
           <input
@@ -207,7 +215,7 @@ export default function Register() {
         {regMessage && (
           <p className="text-sm text-center text-yellow-200">{regMessage}</p>
         )}
-      </Form>
+      </form>
     </LoginView>
   );
 }

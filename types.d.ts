@@ -6,6 +6,7 @@ declare global {
     conn: Connection | null;
     promise: Promise<Connection> | null;
   };
+  var otpStore: Record<string, string> | undefined;
 }
 
 export {};
