@@ -3,6 +3,7 @@ import Address from "./Address";
 import SearchInput from "./SearchInput";
 import { LogIn, ShoppingCart } from "lucide-react";
 import Link from "next/link";
+import LoginButton from "./LoginButton";
 
 export default function Navbar() {
   return (
@@ -20,13 +21,7 @@ export default function Navbar() {
       </div>
       <Address />
       <SearchInput />
-      <Link
-        href="/login"
-        className="flex items-center bg-gray-200/40 rounded-xl px-3 py-1 space-x-2 hover:bg-green-50 hover:text-green-600 transition"
-      >
-        <LogIn className="w-5 h-5" />
-        <span className="text-sm font-medium">Login</span>
-      </Link>
+      <LoginButton />
       <Link
         href="cart"
         className="flex items-center bg-gray-200/40 rounded-xl px-3 py-1 space-x-2 hover:bg-green-50 hover:text-green-600 transition-colors duration-200 cursor-pointer"

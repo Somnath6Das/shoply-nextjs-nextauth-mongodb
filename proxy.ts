@@ -28,14 +28,16 @@ export async function proxy(request: NextRequest) {
   }
 
   // USER → prevent visiting login page if already logged in
-  if (pathname === "/login" && token?.role === "user") {
+  const authPages = ["/login", "/register"];
+  if (authPages.includes(pathname) && token?.role === "user") {
     return NextResponse.redirect(new URL("/", request.url));
   }
-  // USER PROTECTED ROUTES
+
+  // USER PROTECTED ROUTES (only user role allowed)
   const protectedUserRoutes = ["/profile", "/address", "/cart"];
 
   if (protectedUserRoutes.some((route) => pathname.startsWith(route))) {
-    if (!token) {
+    if (!token || token.role !== "user") {
       return NextResponse.redirect(new URL("/login", request.url));
     }
   }
@@ -49,6 +51,7 @@ export const config = {
     "/admin/:path*",
     "/seller/:path*",
     "/login",
+    "/register",
     "/profile/:path*",
     "/address/:path*",
     "/cart/:path*",

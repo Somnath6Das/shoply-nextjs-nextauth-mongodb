@@ -1,56 +1,53 @@
 "use client";
+
 import LoginView from "@/components/home/LoginView";
-import axios from "axios";
-import Form from "next/form";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { signIn } from "next-auth/react";
 
 export default function Login() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
 
-  const handleLogin = async (e) => {
-    e.preventDefault(); // prevent page reload
+  async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     setLoading(true);
     setMessage("");
 
-    // ✅ Access inputs using "name" attributes
-    const email = e.target.email.value.trim();
-    const password = e.target.password.value.trim();
+    const formData = new FormData(e.currentTarget);
+    const email = (formData.get("email") as string)?.trim();
+    const password = formData.get("password") as string;
 
-    try {
-      const res = await axios.post(
-        "/api/user/login",
-        { email, password },
-        { validateStatus: () => true }
-      );
+    const result = await signIn("credentials", {
+      redirect: true,
+      callbackUrl,
+      identifier: email,
+      password,
+    });
 
-      if (res.status === 200 && res.data.success) {
-        setMessage("✅ Login successful!");
-        e.target.reset(); // clear the form
-      } else {
-        setMessage(res.data.error || "❌ Invalid credentials");
-      }
-    } catch (err: any) {
-      console.error("Login failed:", err.message);
-      setMessage("⚠️ Something went wrong. Please try again.");
-    } finally {
+    if (result?.error) {
+      setMessage("❌ " + result.error);
       setLoading(false);
+    } else {
+      console.log("Login successful");
     }
-  };
+  }
 
   return (
     <LoginView>
-      <Form action={handleLogin} className="flex flex-col gap-3">
+      <form onSubmit={handleLogin} className="flex flex-col gap-3">
         <input
           type="email"
-          name="email" // ✅ Important for e.target.email
+          name="email"
           placeholder="Email"
           required
           className="p-2 rounded-lg border border-gray-300 focus:border-green-500 outline-none bg-white/70"
         />
         <input
           type="password"
-          name="password" // ✅ Important for e.target.password
+          name="password"
           placeholder="Password"
           required
           className="p-2 rounded-lg border border-gray-300 focus:border-green-500 outline-none bg-white/70"
@@ -70,13 +67,13 @@ export default function Login() {
         {message && (
           <p
             className={`text-sm ${
-              message.includes("✅") ? "text-green-600" : "text-red-600"
+              message.includes("❌") ? "text-red-600" : "text-green-600"
             }`}
           >
             {message}
           </p>
         )}
-      </Form>
+      </form>
     </LoginView>
   );
 }

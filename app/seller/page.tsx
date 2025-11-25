@@ -1,15 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import SellerMsgForm from "@/components/seller/SellerMsgForm";
-import SellerLogin from "@/components/seller/SellerLogin";
-import { headers } from "next/headers";
 import SellerForms from "@/components/seller/SellerForms";
 
 export default async function AuthPage() {
-  // const url = (await headers()).get("x-next-url");
-  const url = (await headers()).get("referer") ?? "";
-
-  // const [activeTab, setActiveTab] = useState("login");
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Navbar */}
