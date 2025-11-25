@@ -27,11 +27,30 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/seller", request.url));
   }
 
+  // USER → prevent visiting login page if already logged in
+  if (pathname === "/login" && token?.role === "user") {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+  // USER PROTECTED ROUTES
+  const protectedUserRoutes = ["/profile", "/address", "/cart"];
+
+  if (protectedUserRoutes.some((route) => pathname.startsWith(route))) {
+    if (!token) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+  }
   // ✅ Otherwise, allow normal request
   return NextResponse.next();
 }
 
 // Apply proxy to all /admin routes
 export const config = {
-  matcher: ["/admin/:path*", "/seller/:path*"],
+  matcher: [
+    "/admin/:path*",
+    "/seller/:path*",
+    "/login",
+    "/profile/:path*",
+    "/address/:path*",
+    "/cart/:path*",
+  ],
 };
