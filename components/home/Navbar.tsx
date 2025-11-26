@@ -1,11 +1,28 @@
 import Image from "next/image";
 import Address from "./Address";
 import SearchInput from "./SearchInput";
-import { LogIn, ShoppingCart } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import LoginButton from "./LoginButton";
+import Category from "@/models/Category";
+import { connectToDatabase } from "@/lib/db";
 
-export default function Navbar() {
+type SimpleCategory = {
+  _id: string;
+  main: string;
+  subs: string[];
+};
+
+export default async function Navbar() {
+  await connectToDatabase();
+  const categories = await Category.find().sort({ main: 1 }).lean();
+
+  const simple: SimpleCategory[] = categories.map((cat: any) => ({
+    _id: cat._id.toString(),
+    main: cat.main,
+    subs: cat.subs || [],
+  }));
+
   return (
     <nav className="flex flex-wrap gap-4 items-center justify-between bg-white/30 backdrop-blur-md shadow-lg rounded-2xl p-2 pr-4">
       {/* Logo */}
@@ -20,10 +37,10 @@ export default function Navbar() {
         />
       </div>
       <Address />
-      <SearchInput />
+      <SearchInput categories={simple} />
       <LoginButton />
       <Link
-        href="cart"
+        href="/cart"
         className="flex items-center bg-gray-200/40 rounded-xl px-3 py-1 space-x-2 hover:bg-green-50 hover:text-green-600 transition-colors duration-200 cursor-pointer"
       >
         <ShoppingCart className="w-5 h-5 transition-colors duration-200" />

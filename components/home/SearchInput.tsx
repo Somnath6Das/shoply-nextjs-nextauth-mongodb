@@ -2,8 +2,16 @@
 import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
-export default function SearchInput({ categories = null }) {
+type Categories = {
+  _id: string;
+  main: string;
+  subs: string[];
+};
+export default function SearchInput({
+  categories,
+}: {
+  categories: Categories[];
+}) {
   const [searchText, setSearchText] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const router = useRouter();
@@ -35,11 +43,11 @@ export default function SearchInput({ categories = null }) {
           className="px-3 py-2 bg-transparent text-sm font-medium outline-none hover:text-green-600 cursor-pointer"
         >
           <option value="All">All</option>
-          {/* {categories.map((cat) => (
+          {categories.map((cat) => (
             <option key={cat._id} value={cat.main}>
               {cat.main}
             </option>
-          ))} */}
+          ))}
         </select>
         <div className="w-px bg-gray-300 self-stretch" />
       </div>
