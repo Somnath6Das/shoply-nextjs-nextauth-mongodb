@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Address from "./Address";
 import SearchInput from "./SearchInput";
-import { ShoppingCart } from "lucide-react";
+import { Heart, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import LoginButton from "./LoginButton";
 import Category from "@/models/Category";
@@ -38,6 +38,11 @@ export default async function Navbar() {
       </div>
       <Address />
       <SearchInput categories={simple} />
+      {/* Wish List */}
+      <div className="flex items-center bg-gray-200/40 rounded-xl px-3 py-1 space-x-2 hover:bg-green-50 hover:text-green-600 transition-colors duration-200 cursor-pointer">
+        <Heart className="w-5 h-5" />
+        <span className="text-sm font-medium">Wish List</span>
+      </div>
       <LoginButton />
       <Link
         href="/cart"
