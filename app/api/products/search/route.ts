@@ -59,6 +59,7 @@ export async function GET(request: Request) {
             let priceString = (
               v.price ||
               v.combination?.price ||
+              v.price ||
               "0"
             ).toString();
             priceString = priceString.replace(/[^\d.]/g, "");
@@ -88,18 +89,18 @@ export async function GET(request: Request) {
     /** ---------------------------------------
      * 📉 Global Price Range (for UI sliders)
      * --------------------------------------- */
-    const priceList = allProducts.flatMap((p: any) => [p.minPrice, p.maxPrice]);
+    const allPrices = allProducts.flatMap((p: any) => [p.minPrice, p.maxPrice]);
 
     let actualMinPrice = 0;
     let actualMaxPrice = 0;
 
-    if (priceList.length > 0) {
-      priceList.sort((a, b) => a - b);
-      actualMinPrice = priceList[0];
+    if (allPrices.length > 0) {
+      allPrices.sort((a, b) => a - b);
+      actualMinPrice = allPrices[0];
 
       // Drop extreme outliers (90th percentile logic)
-      const index = Math.floor(priceList.length * 0.9);
-      actualMaxPrice = priceList[index] || priceList[priceList.length - 1];
+      const index = Math.floor(allPrices.length * 0.9);
+      actualMaxPrice = allPrices[index] || allPrices[allPrices.length - 1];
     }
 
     /** ---------------------------------------
@@ -124,10 +125,9 @@ export async function GET(request: Request) {
     return NextResponse.json({
       products: filteredProducts,
       brands: availableBrands,
-      priceRange: {
-        min: actualMinPrice,
-        max: actualMaxPrice,
-      },
+      minPrice: actualMinPrice,
+      maxPrice: actualMaxPrice,
+      total: filteredProducts.length,
     });
   } catch (error) {
     console.error("PRODUCT FETCH ERROR:", error);

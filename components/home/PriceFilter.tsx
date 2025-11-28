@@ -1,6 +1,16 @@
 "use client";
 import { Range, getTrackBackground } from "react-range";
 
+interface PriceFilterProps {
+  minPriceSlider: number | null | undefined;
+  maxPriceSlider: number | null | undefined;
+  setMinPriceSlider: React.Dispatch<React.SetStateAction<number>>;
+  setMaxPriceSlider: React.Dispatch<React.SetStateAction<number>>;
+  absoluteMin: number;
+  absoluteMax: number;
+  applyFilters: () => void;
+}
+
 export default function PriceFilter({
   minPriceSlider,
   maxPriceSlider,
@@ -9,7 +19,7 @@ export default function PriceFilter({
   absoluteMin,
   absoluteMax,
   applyFilters,
-}) {
+}: PriceFilterProps) {
   // Provide guaranteed numeric fallbacks
   const safeMin = Number(minPriceSlider ?? absoluteMin ?? 0);
   const safeMax = Number(maxPriceSlider ?? absoluteMax ?? 0);

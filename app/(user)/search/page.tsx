@@ -5,12 +5,29 @@ import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import PriceFilter from "@/components/home/PriceFilter";
 import ProductItem from "@/components/home/ProductItem";
-
+interface Filters {
+  minPrice: number;
+  maxPrice: number;
+  brands: string[];
+}
+interface Product {
+  _id: string;
+  name: string;
+  allImages?: string[];
+  minPrice?: number;
+  maxPrice?: number;
+  variants: {
+    price: number;
+  }[];
+  category: {
+    sub: string;
+  };
+}
 export default function SearchPage() {
   const searchParams = useSearchParams();
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<Filters>({
     minPrice: 0,
     maxPrice: 0,
     brands: [],
@@ -66,7 +83,7 @@ export default function SearchPage() {
     }
   };
 
-  const handleBrandToggle = (brand) => {
+  const handleBrandToggle = (brand: string) => {
     const newBrands = filters.brands.includes(brand)
       ? filters.brands.filter((b) => b !== brand)
       : [...filters.brands, brand];
