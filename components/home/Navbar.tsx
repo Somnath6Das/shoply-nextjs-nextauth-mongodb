@@ -27,14 +27,16 @@ export default async function Navbar() {
     <nav className="flex flex-wrap gap-4 items-center justify-between bg-white/30 backdrop-blur-md shadow-lg rounded-2xl p-2 pr-4">
       {/* Logo */}
       <div className="flex items-center rounded-xl px-3 py-1">
-        <Image
-          src="/images/logo.png"
-          alt="Logo"
-          width={40}
-          height={40}
-          className="rounded"
-          priority
-        />
+        <Link href="/">
+          <Image
+            src="/images/logo.png"
+            alt="Logo"
+            width={40}
+            height={40}
+            className="rounded"
+            priority
+          />
+        </Link>
       </div>
       <Address />
       <SearchInput categories={simple} />

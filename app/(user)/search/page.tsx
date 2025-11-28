@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import PriceFilter from "@/components/home/PriceFilter";
 import ProductItem from "@/components/home/ProductItem";
+
 interface Filters {
   minPrice: number;
   maxPrice: number;
