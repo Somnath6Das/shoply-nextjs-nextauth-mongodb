@@ -24,7 +24,7 @@ export default async function Navbar() {
   }));
 
   return (
-    <nav className="flex flex-wrap gap-4 items-center justify-between bg-white/30 backdrop-blur-md  rounded-2xl p-2 pr-4">
+    <nav className="flex flex-wrap gap-4 items-center justify-between bg-white/30  rounded-2xl p-2 pr-4 drop-shadow-[0_4px_8px_rgba(0,0,0,0.15)] backdrop-blur-md">
       {/* Logo */}
       <div className="flex items-center rounded-xl px-3 py-1">
         <Link href="/">
