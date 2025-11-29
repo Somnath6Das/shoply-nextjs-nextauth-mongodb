@@ -3,4 +3,4 @@ npx dotenv -e .env.local -- tsx scripts/createAdmin.ts
 
 // chadcn
 npx shadcn@latest init
-npx shadcn@latest add input-otp
+npx shadcn@latest add input-otp card
