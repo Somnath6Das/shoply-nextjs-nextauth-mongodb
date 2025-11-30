@@ -104,20 +104,21 @@ export default function ProductMain({
   // When user selects an option value:
   const handleOptionSelect = (optionName: string, value: string) => {
     const trimmed = String(value).trim();
-    const updatedSelection = { ...selectedOptions, [optionName]: trimmed };
 
-    // Try to find best variant that fits this partial selection
-    const matched = findBestVariantFor(updatedSelection);
+    // Create a partial selection with just this one option changed
+    const partialSelection = { [optionName]: trimmed };
+
+    // Try to find best variant that matches this selection
+    const matched = findBestVariantFor(partialSelection);
 
     if (matched) {
-      // If matched, set selected options to full combination of found variant
+      // Auto-select ALL options from the matched variant (this is the key change!)
       setSelectedVariant(matched);
       setSelectedOptions({ ...matched.combination });
-      // reset quantity to 1 (safe)
       setQuantity(1);
     } else {
       // no matching variant: keep partial selection only
-      setSelectedOptions(updatedSelection);
+      setSelectedOptions(partialSelection);
       setSelectedVariant(null);
       setQuantity(1);
     }
