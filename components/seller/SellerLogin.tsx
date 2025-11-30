@@ -7,6 +7,7 @@ import Image from "next/image";
 
 export default function SellerLogin() {
   const [identifier, setIdentifier] = useState("");
+  const [message, setMessage] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
@@ -16,16 +17,17 @@ export default function SellerLogin() {
     e.preventDefault();
     setLoading(true);
     const result = await signIn("credentials", {
-      redirect: true,
+      redirect: false,
       callbackUrl, // specify where to redirect
       identifier: identifier.trim(),
       password,
     });
 
     if (result?.error) {
-      console.log(result.error);
+      setMessage("❌ " + result.error);
+      setLoading(false);
     } else {
-      console.log("Login Successfully"); // redirect after login
+      console.log("Login successful");
     }
   }
   return (
@@ -73,7 +75,17 @@ export default function SellerLogin() {
           "Login"
         )}
       </button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      <div className="flex justify-center">
+        {message && (
+          <p
+            className={`text-sm${
+              message.includes("❌") ? "text-red-600" : "text-green-600"
+            }`}
+          >
+            {message}
+          </p>
+        )}
+      </div>
       <div className="text-center">
         <Link
           href="/seller/forget-password"

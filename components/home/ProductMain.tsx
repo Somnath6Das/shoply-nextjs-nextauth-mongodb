@@ -145,6 +145,7 @@ export default function ProductMain({
   // Quantity options based on selectedVariant stock
   const maxStock = selectedVariant?.stock ?? 0;
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (quantity > maxStock) setQuantity(Math.max(1, maxStock));
   }, [maxStock, quantity]);
 

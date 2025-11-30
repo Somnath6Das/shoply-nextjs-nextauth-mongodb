@@ -21,7 +21,7 @@ export default function Login() {
     const password = formData.get("password") as string;
 
     const result = await signIn("credentials", {
-      redirect: true,
+      redirect: false,
       callbackUrl,
       identifier: email,
       password,
