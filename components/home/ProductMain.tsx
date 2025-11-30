@@ -245,9 +245,16 @@ export default function ProductMain({
             )}
           </div>
 
-          <div className="mt-2 text-sm text-blue-700">
-            Delivery by <strong>{deliveryDateText}</strong>
-          </div>
+          {!selectedVariant ||
+          (selectedVariant && selectedVariant.stock === 0) ? (
+            <div className="mt-2 text-sm text-red-700">
+              Currently Not Avaiable
+            </div>
+          ) : (
+            <div className="mt-2 text-sm text-blue-700">
+              Delivery by <strong>{deliveryDateText}</strong>
+            </div>
+          )}
         </div>
 
         <hr className="my-5" />
