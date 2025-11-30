@@ -5,26 +5,30 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 
 export default function AdminLogin() {
+  const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
-  const error = searchParams.get("error");
   const callbackUrl = searchParams.get("callbackUrl") || "/admin/dashboard";
   async function handleLogin(e: React.FormEvent) {
+    setLoading(true);
     e.preventDefault();
 
     const result = await signIn("credentials", {
-      redirect: true,
+      redirect: false,
       callbackUrl, // specify where to redirect
       identifier: username,
       password,
     });
 
     if (result?.error) {
-      console.log(result.error);
+      setMessage("❌ " + result.error);
+      setLoading(false);
     } else {
-      console.log("Login Successfully"); // redirect after login
+      console.log("Login successful");
+      router.replace("/admin/dashboard");
     }
   }
 
@@ -62,10 +66,21 @@ export default function AdminLogin() {
         <button
           type="submit"
           className="bg-blue-600 text-white px-4 py-2 rounded "
+          disabled={loading}
         >
           Login
         </button>
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        <div className="flex justify-center">
+          {message && (
+            <p
+              className={`text-sm${
+                message.includes("❌") ? "text-red-600" : "text-green-600"
+              }`}
+            >
+              {message}
+            </p>
+          )}
+        </div>
       </form>
     </div>
   );

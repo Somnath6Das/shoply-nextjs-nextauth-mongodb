@@ -4,8 +4,10 @@ import LoginView from "@/components/home/LoginView";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
+  const router = useRouter();
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
@@ -32,6 +34,7 @@ export default function Login() {
       setLoading(false);
     } else {
       console.log("Login successful");
+      router.refresh();
     }
   }
 

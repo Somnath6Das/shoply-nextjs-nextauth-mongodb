@@ -6,12 +6,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 
 export default function SellerLogin() {
+  const router = useRouter();
   const [identifier, setIdentifier] = useState("");
   const [message, setMessage] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
-  const error = searchParams.get("error");
   const callbackUrl = searchParams.get("callbackUrl") || "/seller/dashboard";
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -28,6 +28,7 @@ export default function SellerLogin() {
       setLoading(false);
     } else {
       console.log("Login successful");
+      router.replace("/seller/dashboard");
     }
   }
   return (
