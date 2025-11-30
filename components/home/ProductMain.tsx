@@ -72,6 +72,7 @@ export default function ProductMain({
   // On mount: if there is any natural default, set it to first variant (keeps UI filled)
   useEffect(() => {
     if (product.variants && product.variants.length > 0) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSelectedVariant(product.variants[0]);
       setSelectedOptions(product.variants[0].combination);
       setQuantity(1);
@@ -80,7 +81,10 @@ export default function ProductMain({
 
   // Helper: try to find the best variant given partial selections
   const findBestVariantFor = (partialSelection: Record<string, string>) => {
-    // 1) Try to find variant that matches ALL provided selected keys
+    const keys = Object.keys(partialSelection);
+    if (keys.length === 0) return null;
+
+    // 1) Try to find variant that matches ALL provided selected keys (exact match)
     const exactMatch = product.variants.find((v: any) =>
       Object.entries(partialSelection).every(
         ([k, val]) => v.combination[k] === val
@@ -88,36 +92,13 @@ export default function ProductMain({
     );
     if (exactMatch) return exactMatch;
 
-    // 2) If not found, try to find any variant that matches the last-chosen option value
-    // (best-effort): find variant where for every key in partialSelection that exists in variant,
-    // the values match (same as above) - fallback to any variant that has the value for the last key.
-    const keys = Object.keys(partialSelection);
-    if (keys.length === 0) return null;
+    // 2) If partial selection (not all options selected), find ANY variant that matches the provided keys
+    // This enables auto-completing the rest of the options
+    const partialMatch = product.variants.find((v: any) => {
+      return keys.every((k) => v.combination[k] === partialSelection[k]);
+    });
 
-    // try less strict match: variant that matches at least one selected key AND the recently chosen value
-    for (const v of product.variants) {
-      let matchAtLeastOne = false;
-      let allMatchedWhereProvided = true;
-      for (const k of keys) {
-        if (v.combination[k] === partialSelection[k]) {
-          matchAtLeastOne = true;
-        } else {
-          // if the partial selection includes key but it's different than this variant's value
-          // then this variant does not match "all provided keys"
-          allMatchedWhereProvided = false;
-        }
-      }
-      // prefer variants matching all provided keys (already covered), otherwise accept matchAtLeastOne
-      if (allMatchedWhereProvided && matchAtLeastOne) return v;
-    }
-
-    // fallback: find variant that matches last selected key value
-    const lastKey = keys[keys.length - 1];
-    const lastVal = partialSelection[lastKey];
-    const fallback = product.variants.find(
-      (v: any) => v.combination[lastKey] === lastVal
-    );
-    return fallback || null;
+    return partialMatch || null;
   };
 
   // When user selects an option value:
