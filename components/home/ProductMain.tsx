@@ -104,31 +104,31 @@ export default function ProductMain({
   // When user selects an option value:
   const handleOptionSelect = (optionName: string, value: string) => {
     const trimmed = String(value).trim();
+    const updatedSelection = { ...selectedOptions, [optionName]: trimmed };
 
-    // Create a partial selection with just this one option changed
-    const partialSelection = { [optionName]: trimmed };
-
-    // Try to find best variant that matches this selection
-    const matched = findBestVariantFor(partialSelection);
+    // Try to find best variant that fits this partial selection
+    const matched = findBestVariantFor(updatedSelection);
 
     if (matched) {
-      // Auto-select ALL options from the matched variant (this is the key change!)
+      // If matched, set selected options to full combination of found variant
       setSelectedVariant(matched);
       setSelectedOptions({ ...matched.combination });
+      // reset quantity to 1 (safe)
       setQuantity(1);
     } else {
       // no matching variant: keep partial selection only
-      setSelectedOptions(partialSelection);
+      setSelectedOptions(updatedSelection);
       setSelectedVariant(null);
       setQuantity(1);
     }
   };
-
+  let displayImage = "";
+  if (!selectedVariant || (selectedVariant && selectedVariant.stock === 0)) {
+    displayImage = "/placeholder.png";
+  } else {
+    displayImage = selectedVariant?.images?.[0] ?? product.allImages?.[0];
+  }
   // Display image: variant image if available otherwise first product image or placeholder
-  const displayImage =
-    selectedVariant?.images?.[0] ??
-    product.allImages?.[0] ??
-    "/placeholder.png";
 
   // Delivery date: today + deliveryInDays
   const deliveryDateText = useMemo(() => {
