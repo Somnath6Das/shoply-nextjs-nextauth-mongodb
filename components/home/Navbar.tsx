@@ -27,7 +27,7 @@ export default async function Navbar() {
     <nav className="flex flex-wrap gap-4 items-center justify-between bg-white/30  rounded-2xl p-2 pr-4 drop-shadow-[0_4px_8px_rgba(0,0,0,0.15)] backdrop-blur-md">
       {/* Logo */}
       <div className="flex items-center rounded-xl px-3 py-1">
-        <Link href="/">
+        <Link href="/" className="flex items-center space-x-1">
           <Image
             src="/images/logo.png"
             alt="Logo"
@@ -36,6 +36,7 @@ export default async function Navbar() {
             className="rounded"
             priority
           />
+          <h2 className="text-green-600 font-medium text-2xl">Shoply</h2>
         </Link>
       </div>
       <Address />
