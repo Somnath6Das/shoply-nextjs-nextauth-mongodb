@@ -34,7 +34,7 @@ export async function proxy(request: NextRequest) {
   }
 
   // USER PROTECTED ROUTES (only user role allowed)
-  const protectedUserRoutes = ["/profile", "/address", "/cart"];
+  const protectedUserRoutes = ["/profile", "/address", "/cart", "/checkout"];
 
   if (protectedUserRoutes.some((route) => pathname.startsWith(route))) {
     if (!token || token.role !== "user") {
@@ -55,5 +55,6 @@ export const config = {
     "/profile/:path*",
     "/address/:path*",
     "/cart/:path*",
+    "/checkout/:path*",
   ],
 };
