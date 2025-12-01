@@ -13,15 +13,15 @@ export default function LoginButton() {
       {session?.user.role === "user" ? (
         <Link
           href="/profile"
-          className="flex items-center bg-gray-200/40 rounded-xl px-3 py-1 space-x-2 hover:bg-green-50 hover:text-green-600 transition"
+          className="flex items-center bg-gray-200/40 rounded-xl px-3 py-1 space-x-2  hover:text-green-600 transition"
         >
-          <CircleUserRound />
+          <CircleUserRound size={20} />
           <span className="text-sm font-medium">Profile</span>
         </Link>
       ) : (
         <Link
           href="/login"
-          className="flex items-center bg-gray-200/40 rounded-xl px-3 py-1 space-x-2 hover:bg-green-50 hover:text-green-600 transition"
+          className="flex items-center bg-gray-200/40 rounded-xl px-3 py-1 space-x-2  hover:text-green-600 transition"
         >
           <LogIn className="w-5 h-5" />
           <span className="text-sm font-medium">Login</span>

@@ -36,20 +36,20 @@ export default async function Navbar() {
             className="rounded"
             priority
           />
-          <h2 className="text-green-600 font-medium text-2xl">Shoply</h2>
+          <h2 className="text-green-600 font-semibold text-xl">Shoply</h2>
         </Link>
       </div>
       <Address />
       <SearchInput categories={simple} />
       {/* Wish List */}
-      <div className="flex items-center bg-gray-200/40 rounded-xl px-3 py-1 space-x-2 hover:bg-green-50 hover:text-green-600 transition-colors duration-200 cursor-pointer">
+      <div className="flex items-center bg-gray-200/40 rounded-xl px-3 py-1 space-x-2  hover:text-green-600 transition-colors duration-200 cursor-pointer">
         <Heart className="w-5 h-5" />
         <span className="text-sm font-medium">Wish List</span>
       </div>
       <LoginButton />
       <Link
         href="/cart"
-        className="flex items-center bg-gray-200/40 rounded-xl px-3 py-1 space-x-2 hover:bg-green-50 hover:text-green-600 transition-colors duration-200 cursor-pointer"
+        className="flex items-center bg-gray-200/40 rounded-xl px-3 py-1 space-x-2  hover:text-green-600 transition-colors duration-200 cursor-pointer"
       >
         <ShoppingCart className="w-5 h-5 transition-colors duration-200" />
         <span className="text-sm font-medium">Cart</span>
