@@ -97,17 +97,19 @@ export default function AddressInputs({ address }: { address: any }) {
 
       {/* Show Saved Address */}
       {!editing && address && (
-        <Card className="flex  items-start rounded-xl border pl-5">
-          <CardContent className="p-4 space-y-2">
+        <Card className="flex justify-center items-center rounded-xl border pl-5">
+          <CardContent className="p-4 space-y-2 ">
             <p className="font-semibold">{address.name}</p>
             <p className="text-sm text-gray-700">{address.location}</p>
             <p className="text-sm">{address.pin}</p>
             <p className="text-sm">📞 {address.phone}</p>
 
-            <div className="flex gap-3 mt-3">
-              <Button onClick={() => setEditing(true)}>Edit</Button>
+            <div className="flex  gap-3 mt-3 items-center">
+              <Button className="bg-green-500" onClick={() => setEditing(true)}>
+                Edit
+              </Button>
 
-              <Button variant="destructive" onClick={deleteAddress}>
+              <Button className="bg-red-400" onClick={deleteAddress}>
                 Delete
               </Button>
             </div>

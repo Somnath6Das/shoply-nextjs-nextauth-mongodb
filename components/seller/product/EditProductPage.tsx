@@ -72,13 +72,19 @@ export default function EditProductPage({
     product?.allImages?.length ? product.allImages : []
   );
 
+  // Track raw input for option values
+  const [optionInputs, setOptionInputs] = useState<string[]>(
+    product?.options?.length
+      ? product.options.map((opt) => opt.values.join(", "))
+      : []
+  );
+
   // CATEGORY: add main category (uses server action)
   const handleAddMain = async () => {
     if (!newMain.trim()) return alert("Enter main category");
 
     const form = new FormData();
     form.append("main", newMain);
-    // your server action expects FormData in create UI — keep same
     await addMainCategory(form);
 
     setNewMain("");
@@ -101,11 +107,15 @@ export default function EditProductPage({
   };
 
   // Options handlers
-  const addOption = () =>
+  const addOption = () => {
     setOptions((prev) => [...prev, { name: "", values: [] }]);
+    setOptionInputs((prev) => [...prev, ""]);
+  };
 
-  const removeOption = (idx: number) =>
+  const removeOption = (idx: number) => {
     setOptions((prev) => prev.filter((_, i) => i !== idx));
+    setOptionInputs((prev) => prev.filter((_, i) => i !== idx));
+  };
 
   const updateOptionName = (idx: number, nameVal: string) => {
     const updated = [...options];
@@ -114,8 +124,13 @@ export default function EditProductPage({
   };
 
   const updateOptionValues = (idx: number, csv: string) => {
+    // Update the raw input
+    const updatedInputs = [...optionInputs];
+    updatedInputs[idx] = csv;
+    setOptionInputs(updatedInputs);
+
+    // Parse into array for the actual option
     const updated = [...options];
-    // split by comma and trim empty
     updated[idx].values = csv
       .split(",")
       .map((v) => v.trim())
@@ -156,7 +171,7 @@ export default function EditProductPage({
 
   const handleVariantImageSelect = (vi: number, imageUrl: string) => {
     const updated = [...variants];
-    updated[vi].images = [imageUrl]; // only one image per variant in your UI
+    updated[vi].images = [imageUrl];
     setVariants(updated);
   };
 
@@ -176,7 +191,6 @@ export default function EditProductPage({
 
   // Submit update
   const handleSubmit = async () => {
-    // validation can be added here if needed
     const payload = {
       name,
       description,
@@ -230,7 +244,7 @@ export default function EditProductPage({
           />
         </label>
       </div>
-      {/* CATEGORY MANAGEMENT UI — unchanged */}
+
       <div className="border rounded-md p-4">
         <h3 className="font-semibold mb-3 text-lg">Category Management</h3>
 
@@ -306,12 +320,10 @@ export default function EditProductPage({
         )}
       </div>
 
-      {/* IMAGE UPLOAD — same UI */}
       <div>
         <label className="block font-semibold mb-2">Product Images</label>
 
         <div className="flex gap-3 flex-wrap">
-          {/* Upload Button */}
           <label className="w-24 h-24 border-2 border-dashed border-gray-400 rounded-lg flex items-center justify-center cursor-pointer hover:bg-gray-50 relative">
             <span className="text-3xl text-gray-500">+</span>
 
@@ -326,7 +338,6 @@ export default function EditProductPage({
             />
           </label>
 
-          {/* Preview Thumbnails */}
           {allImages.map((img, idx) => (
             <div key={idx} className="relative w-24 h-24">
               <Image
@@ -348,7 +359,6 @@ export default function EditProductPage({
         </div>
       </div>
 
-      {/* Options UI */}
       <button
         type="button"
         onClick={addOption}
@@ -376,14 +386,13 @@ export default function EditProductPage({
           <input
             type="text"
             placeholder="Values (comma separated)"
-            value={opt.values.join(",")}
+            value={optionInputs[i] || ""}
             onChange={(e) => updateOptionValues(i, e.target.value)}
             className="w-full border border-gray-300 rounded-md px-3 py-2"
           />
         </div>
       ))}
 
-      {/* Add Variant */}
       <button
         type="button"
         onClick={addVariant}
@@ -392,7 +401,6 @@ export default function EditProductPage({
         Add Variant
       </button>
 
-      {/* Variants */}
       {variants.map((variant, vi) => (
         <div key={vi} className="relative border p-3 rounded space-y-3">
           <button
@@ -443,7 +451,6 @@ export default function EditProductPage({
             className="w-full border border-gray-300 rounded-md px-3 py-2"
           />
 
-          {/* Variant Images — choose from allImages */}
           <label className="block text-sm font-medium mb-1">Select Image</label>
           <div className="flex gap-2 flex-wrap">
             {allImages.map((img, idx) => {
@@ -470,7 +477,6 @@ export default function EditProductPage({
         </div>
       ))}
 
-      {/* Submit */}
       <button
         type="button"
         onClick={handleSubmit}
