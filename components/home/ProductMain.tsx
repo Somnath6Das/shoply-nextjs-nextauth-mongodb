@@ -8,8 +8,10 @@ type ProductRaw = any;
 
 export default function ProductMain({
   product: rawProduct,
+  seller,
 }: {
   product: ProductRaw;
+  seller: any;
 }) {
   // Normalize DB data (trim values) to avoid mismatches like " 512gb"
   const product = useMemo(() => {
@@ -257,6 +259,9 @@ export default function ProductMain({
               Delivery by <strong>{deliveryDateText}</strong>
             </div>
           )}
+          <div className="mt-2 text-sm text-black">
+            Sold by <strong>{seller.username}</strong>
+          </div>
         </div>
 
         <hr className="my-5" />

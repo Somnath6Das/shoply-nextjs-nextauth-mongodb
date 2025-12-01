@@ -5,6 +5,7 @@ import Address from "@/models/Address";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { Types } from "mongoose";
+import User from "@/models/User";
 
 // Types for the data structures
 interface Variant {
@@ -66,7 +67,9 @@ interface CheckoutPageProps {
     qty?: string;
   }>;
 }
-
+interface Sellername {
+  username: string | undefined;
+}
 export default async function CheckoutPage({
   searchParams,
 }: CheckoutPageProps) {
@@ -80,7 +83,7 @@ export default async function CheckoutPage({
 
   let item: CheckoutItem | null = null;
   let address: SerializedAddress | null = null;
-
+  let seller: Sellername;
   try {
     await connectToDatabase();
 
@@ -98,6 +101,7 @@ export default async function CheckoutPage({
     if (!product) {
       return <div className="p-10 text-center">Product not found</div>;
     }
+    seller = await User.findOne({ _id: product.sellerId }).lean();
 
     const variant = product.variants.find(
       (v: Variant) => String(v._id) === String(variantId)
@@ -140,5 +144,11 @@ export default async function CheckoutPage({
     return <div className="p-10 text-center">Failed to load checkout</div>;
   }
 
-  return <CheckoutClient item={item} address={address} />;
+  return (
+    <CheckoutClient
+      item={item}
+      address={address}
+      sellerUsername={seller?.username}
+    />
+  );
 }

@@ -1,13 +1,16 @@
 "use client";
 
 import Image from "next/image";
-
+import Link from "next/link";
+type SellerName = string | undefined;
 export default function CheckoutClient({
   item,
   address,
+  sellerUsername,
 }: {
   item: any;
   address: any;
+  sellerUsername: SellerName;
 }) {
   const qty = item.qty;
 
@@ -38,7 +41,9 @@ export default function CheckoutClient({
             <p className="text-gray-600 mt-1">No address found</p>
           )}
 
-          <button className="text-blue-600 mt-2">Change Address</button>
+          <Link href="/address" className="text-blue-600 mt-2">
+            Change Address
+          </Link>
         </div>
 
         {/* PAYMENT */}
@@ -66,7 +71,7 @@ export default function CheckoutClient({
               <p className="text-gray-600 text-sm mt-1">Qty: {qty}</p>
 
               <p className="text-sm text-gray-600 mt-1">
-                Sold by {item.sellerId}
+                Sold by {sellerUsername}
               </p>
 
               <p className="text-xs text-gray-500 mt-1">
