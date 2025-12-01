@@ -70,6 +70,7 @@ interface CheckoutPageProps {
 interface Sellername {
   username: string | undefined;
 }
+
 export default async function CheckoutPage({
   searchParams,
 }: CheckoutPageProps) {
@@ -83,7 +84,7 @@ export default async function CheckoutPage({
 
   let item: CheckoutItem | null = null;
   let address: SerializedAddress | null = null;
-  let seller: Sellername;
+  let seller: Sellername | null = null;
   try {
     await connectToDatabase();
 
@@ -101,7 +102,9 @@ export default async function CheckoutPage({
     if (!product) {
       return <div className="p-10 text-center">Product not found</div>;
     }
-    seller = await User.findOne({ _id: product.sellerId }).lean();
+    seller =
+      (await User.findOne({ _id: product.sellerId }).lean<Sellername>()) ??
+      null;
 
     const variant = product.variants.find(
       (v: Variant) => String(v._id) === String(variantId)
