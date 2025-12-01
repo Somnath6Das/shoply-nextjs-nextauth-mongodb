@@ -1,11 +1,14 @@
 import { Schema, model, models } from "mongoose";
 
-const VariantSchema = new Schema({
-  combination: { type: Object, required: true },
-  price: { type: String, required: true },
-  stock: { type: String, required: true },
-  images: { type: [String], default: [] },
-});
+const VariantSchema = new Schema(
+  {
+    combination: { type: Object, required: true },
+    price: { type: String, required: true },
+    stock: { type: String, required: true },
+    images: { type: [String], default: [] },
+  },
+  { _id: true }
+);
 
 const OptionSchema = new Schema({
   name: { type: String, required: true },

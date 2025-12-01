@@ -157,6 +157,7 @@ export default function ProductMain({
     }
     // Example redirect to checkout with variant id and qty
     const vid = selectedVariant._id;
+    console.log(vid);
     window.location.href = `/checkout?variantId=${encodeURIComponent(
       vid
     )}&qty=${quantity}`;
