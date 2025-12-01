@@ -2,7 +2,13 @@
 
 import Image from "next/image";
 
-export default function CheckoutClient({ item }: { item: any }) {
+export default function CheckoutClient({
+  item,
+  address,
+}: {
+  item: any;
+  address: any;
+}) {
   const qty = item.qty;
 
   const price = item.price * qty;
@@ -17,14 +23,22 @@ export default function CheckoutClient({ item }: { item: any }) {
       <div className="col-span-2 space-y-5">
         {/* ADDRESS */}
         <div className="p-5 border rounded bg-white">
-          <h2 className="font-semibold text-lg">Delivering to Somnath Das</h2>
-          <p className="text-gray-600 mt-1">
-            South Garia, Netaji Sangha., Roybahadur Road., Kolkata, WEST BENGAL,
-            743613, India
-          </p>
-          <button className="text-blue-600 mt-2">
-            Add delivery instructions
-          </button>
+          {address?.name && (
+            <h2 className="font-semibold text-lg">
+              Delivering to {address?.name}
+            </h2>
+          )}
+
+          {address ? (
+            <p className="text-gray-600 mt-1">
+              {address?.location}, {address?.pin} <br />
+              Phone: {address?.phone}
+            </p>
+          ) : (
+            <p className="text-gray-600 mt-1">No address found</p>
+          )}
+
+          <button className="text-blue-600 mt-2">Change Address</button>
         </div>
 
         {/* PAYMENT */}
