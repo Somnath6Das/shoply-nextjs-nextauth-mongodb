@@ -1,7 +1,10 @@
 "use client";
 
+import { placeOrder } from "@/app/actions/placeOrder";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 type SellerName = string | undefined;
 export default function CheckoutClient({
   item,
@@ -12,13 +15,35 @@ export default function CheckoutClient({
   address: any;
   sellerUsername: SellerName;
 }) {
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
   const qty = item.qty;
 
   const price = item.price * qty;
   const deliveryFee = 40;
-  const payOnDeliveryFee = 7;
+
   const discount = -40;
-  const total = price + deliveryFee + payOnDeliveryFee + discount;
+  const total = price + deliveryFee + discount;
+
+  const handlePlaceOrder = async () => {
+    setLoading(true);
+
+    const res = await placeOrder({
+      productId: item.productId,
+      variantId: item.variantId,
+      sellerId: item.sellerId,
+      qty: item.qty,
+      price: item.price,
+    });
+
+    setLoading(false);
+
+    if (res?.success) {
+      router.push("/profile");
+    } else {
+      alert(res.error || "Something went wrong");
+    }
+  };
 
   return (
     <div className="max-w-6xl mx-auto p-5 grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -93,8 +118,11 @@ export default function CheckoutClient({
 
       {/* RIGHT SIDE SUMMARY */}
       <div className="p-5 border rounded bg-white h-fit">
-        <button className="w-full bg-yellow-400 py-3 rounded text-lg font-semibold">
-          Place your order
+        <button
+          onClick={handlePlaceOrder}
+          className="w-full bg-yellow-400 py-3 rounded text-lg font-semibold"
+        >
+          {loading ? "Placing order..." : "Place Order"}
         </button>
 
         <p className="text-sm mt-3 text-gray-600">
@@ -112,11 +140,6 @@ export default function CheckoutClient({
           <div className="flex justify-between">
             <span>Delivery:</span>
             <span>₹{deliveryFee}</span>
-          </div>
-
-          <div className="flex justify-between">
-            <span>Cash on Delivery fee:</span>
-            <span>₹{payOnDeliveryFee}</span>
           </div>
 
           <div className="flex justify-between text-green-700 font-semibold">
