@@ -1,5 +1,6 @@
 "use client";
 
+import axios from "axios";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -75,7 +76,35 @@ export default function OrderCard({ order }: OrderCardProps) {
         return "bg-gray-100 text-gray-800";
     }
   };
+  const handleStatusChange = async () => {
+    if (!confirm("Are you sure you want to cancel this order?")) {
+      return;
+    }
 
+    try {
+      const response = await axios.patch(
+        `/api/orders/${order._id}/status`,
+        { status: "canceled" },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.data.success) {
+        alert("Order canceled successfully!");
+        // Refresh the page to show updated status
+        window.location.reload();
+      }
+    } catch (error: any) {
+      console.error("Error updating order status:", error);
+      const errorMessage =
+        error.response?.data?.error ||
+        "Failed to cancel order. Please try again.";
+      alert(errorMessage);
+    }
+  };
   const address = order.address[0];
   // Get the max delivery days from all items
   const maxDeliveryDays = Math.max(
@@ -111,9 +140,12 @@ export default function OrderCard({ order }: OrderCardProps) {
           </div>
           <div className="flex items-center gap-4">
             <span
-              className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(
-                order.status
-              )}`}
+              className={`px-3 py-1 rounded-full text-sm font-medium 
+    ${
+      order.status === "canceled" ? "bg-red-500 text-white border-red-200" : ""
+    } 
+    ${getStatusColor(order.status)}
+  `}
             >
               {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
             </span>
@@ -204,6 +236,12 @@ export default function OrderCard({ order }: OrderCardProps) {
           </button>
           <button className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-50 text-sm font-medium">
             View Invoice
+          </button>
+          <button
+            onClick={handleStatusChange}
+            className="px-4 py-2 border-2 border-red-600 rounded hover:bg-red-50 text-sm font-medium"
+          >
+            Cancel
           </button>
         </div>
       </div>

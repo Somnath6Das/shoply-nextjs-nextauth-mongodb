@@ -11,6 +11,7 @@ import {
   ChevronUp,
 } from "lucide-react";
 import Image from "next/image";
+import axios from "axios";
 
 interface OrderItem {
   productId: string;
@@ -51,13 +52,12 @@ interface OrderCardProps {
 export default function OrderCard({ order }: OrderCardProps) {
   const [expanded, setExpanded] = useState(false);
   const [status, setStatus] = useState(order.status);
-
+  const [isUpdating, setIsUpdating] = useState(false);
   const statusColors = {
     pending: "bg-yellow-100 text-yellow-800 border-yellow-200",
-    processing: "bg-blue-100 text-blue-800 border-blue-200",
     shipped: "bg-purple-100 text-purple-800 border-purple-200",
     delivered: "bg-green-100 text-green-800 border-green-200",
-    cancelled: "bg-red-100 text-red-800 border-red-200",
+    canceled: "bg-red-500 text-white border-red-200",
   };
 
   const formatDate = (dateString: string) => {
@@ -71,8 +71,34 @@ export default function OrderCard({ order }: OrderCardProps) {
   };
 
   const handleStatusChange = async (newStatus: string) => {
-    // Add your API call here to update order status
-    setStatus(newStatus);
+    if (newStatus === status) return;
+
+    setIsUpdating(true);
+    try {
+      const response = await axios.patch(
+        `/api/orders/${order._id}/status`,
+        { status: newStatus },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.data.success) {
+        setStatus(newStatus);
+        // Optional: Show success message
+        alert("Order status updated successfully!");
+      }
+    } catch (error: any) {
+      console.error("Error updating order status:", error);
+      const errorMessage =
+        error.response?.data?.error ||
+        "Failed to update order status. Please try again.";
+      alert(errorMessage);
+    } finally {
+      setIsUpdating(false);
+    }
   };
 
   return (
@@ -140,12 +166,17 @@ export default function OrderCard({ order }: OrderCardProps) {
           <select
             value={status}
             onChange={(e) => handleStatusChange(e.target.value)}
-            className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            disabled={status === "canceled"}
+            className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <option value="pending">Pending</option>
 
             <option value="shipped">Shipped</option>
+            <option value="delivered">Delivered</option>
           </select>
+          {isUpdating && (
+            <span className="ml-2 text-sm text-gray-600">Updating...</span>
+          )}
         </div>
       </div>
 
