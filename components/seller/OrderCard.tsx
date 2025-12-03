@@ -88,7 +88,6 @@ export default function OrderCard({ order }: OrderCardProps) {
       if (response.data.success) {
         setStatus(newStatus);
         // Optional: Show success message
-        alert("Order status updated successfully!");
       }
     } catch (error: any) {
       console.error("Error updating order status:", error);

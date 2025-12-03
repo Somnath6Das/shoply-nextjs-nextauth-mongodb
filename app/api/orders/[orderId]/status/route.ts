@@ -40,18 +40,8 @@ export async function PATCH(
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
 
-    // ✅ Buyers can only cancel pending orders
-    if (isBuyer && status === "canceled") {
-      if (order.status !== "pending") {
-        return NextResponse.json(
-          { error: "Only pending orders can be canceled" },
-          { status: 400 }
-        );
-      }
-    }
-
     // ✅ Sellers can update to shipped/delivered
-    if (isSeller && !["shipped", "delivered"].includes(status)) {
+    if (isSeller && !["pending", "shipped", "delivered"].includes(status)) {
       return NextResponse.json(
         { error: "Sellers can only update to shipped or delivered" },
         { status: 403 }

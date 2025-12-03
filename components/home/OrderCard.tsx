@@ -93,7 +93,6 @@ export default function OrderCard({ order }: OrderCardProps) {
       );
 
       if (response.data.success) {
-        alert("Order canceled successfully!");
         // Refresh the page to show updated status
         window.location.reload();
       }
@@ -161,7 +160,7 @@ export default function OrderCard({ order }: OrderCardProps) {
         {order.items.map((item, index) => (
           <div key={item._id} className={index > 0 ? "mt-6 pt-6 border-t" : ""}>
             <div className="flex gap-4">
-              <div className="relative w-24 h-24 flex-shrink-0">
+              <div className="relative w-24 h-24 shrink-0">
                 <Image
                   src={item.image}
                   alt={item.ItemName}
@@ -239,7 +238,12 @@ export default function OrderCard({ order }: OrderCardProps) {
           </button>
           <button
             onClick={handleStatusChange}
-            className="px-4 py-2 border-2 border-red-600 rounded hover:bg-red-50 text-sm font-medium"
+            disabled={order.status === "delivered"}
+            className={`px-4 py-2 border-2 ${
+              order.status === "delivered"
+                ? "border-gray-400 rounded "
+                : "border-red-600 rounded hover:bg-red-50 "
+            } text-sm font-medium`}
           >
             Cancel
           </button>
