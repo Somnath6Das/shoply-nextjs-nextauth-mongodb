@@ -2,8 +2,16 @@ import Logout from "@/components/Logout";
 import Image from "next/image";
 import { ReactNode } from "react";
 import Leftbar from "@/components/Leftbar";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
-export default function AdminLayout({ children }: { children: ReactNode }) {
+export default async function AdminLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const session = await getServerSession(authOptions);
+  const email = session?.user?.email;
   const menuItems = [
     { name: "Orders", icon: "ShoppingCart", path: "/seller/dashboard" },
     { name: "Products", icon: "Package", path: "/seller/dashboard/products" },
@@ -31,7 +39,10 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
             Seller
           </h1>
         </div>
-        <Logout path={"/seller"} />
+        <div className="flex items-center space-x-2">
+          <h1 className="text-base font-semibold text-green-700">{email}</h1>
+          <Logout path={"/seller"} />
+        </div>
       </header>
 
       {/* BODY */}

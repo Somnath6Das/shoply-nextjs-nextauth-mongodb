@@ -2,13 +2,20 @@ import Logout from "@/components/Logout";
 import Image from "next/image";
 import { ReactNode } from "react";
 import Leftbar from "@/components/Leftbar";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
-export default function AdminLayout({ children }: { children: ReactNode }) {
+export default async function AdminLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
   const menuItems = [
     { name: "Messages", icon: "MessageSquarePlus", path: "/admin/dashboard" },
     { name: "Sellers", icon: "UsersRound", path: "/admin/dashboard/sellers" },
   ];
-
+  const session = await getServerSession(authOptions);
+  const username = session?.user?.username;
   return (
     // Layout takes full height and prevents layout scrolling
     <div className="h-screen flex flex-col overflow-hidden bg-gray-50">
@@ -22,10 +29,15 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
             height={40}
             className="object-contain"
           />
+
           <h1 className="text-lg font-semibold text-green-600 tracking-wide">
             Admin
           </h1>
+          <h1 className="text-base font-semibold text-green-600 bg-gray-200 px-1 py-0.5 rounded-md">
+            {username}
+          </h1>
         </div>
+
         <Logout path={"/admin"} />
       </header>
 

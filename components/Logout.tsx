@@ -1,4 +1,5 @@
 "use client";
+import { LogOut } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { useState } from "react";
 
@@ -22,10 +23,11 @@ const Logout = ({ path }: { path: string }) => {
     <button
       onClick={handleLogout}
       disabled={loading}
-      className={`px-5 py-2  text-sm font-medium text-white rounded-lg bg-black hover:bg-gray-800 transition h-10 ${
+      className={`flex items-center gap-2 px-5 py-2  text-sm font-medium text-white rounded-lg bg-red-700 hover:bg-red-900 transition h-10 ${
         loading ? "opacity-60 cursor-not-allowed" : ""
       }`}
     >
+      <LogOut size={15} />
       {loading ? (
         <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
       ) : (

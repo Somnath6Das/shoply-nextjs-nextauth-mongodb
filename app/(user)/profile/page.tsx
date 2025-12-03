@@ -40,7 +40,7 @@ interface SerializedOrder {
 
 export default async function OrdersPage() {
   const session = await getServerSession(authOptions);
-
+  const email = session?.user?.email;
   if (!session?.user?.id) {
     redirect("/auth/signin");
   }
@@ -107,7 +107,10 @@ export default async function OrdersPage() {
     <div className="max-w-6xl mx-auto p-6">
       <div className="flex justify-between items-start mb-6">
         <h1 className="text-3xl font-bold">My Orders</h1>
-        <Logout path="/" />
+        <div className="flex items-center space-x-2">
+          <h1 className="text-lg font-semibold text-green-700">{email}</h1>
+          <Logout path="/" />
+        </div>
       </div>
       <div className="space-y-4">
         {orders.map((order) => (

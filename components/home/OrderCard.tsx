@@ -205,11 +205,6 @@ export default function OrderCard({ order }: OrderCardProps) {
           <button className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-50 text-sm font-medium">
             View Invoice
           </button>
-          {order.status === "pending" && (
-            <button className="px-4 py-2 border border-red-300 text-red-600 rounded hover:bg-red-50 text-sm font-medium">
-              Cancel Order
-            </button>
-          )}
         </div>
       </div>
     </div>

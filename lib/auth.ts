@@ -4,10 +4,6 @@ import { connectToDatabase } from "./db";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 
-interface UserWithRole {
-  role: "user" | "seller" | "admin";
-}
-
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -39,7 +35,8 @@ export const authOptions: NextAuthOptions = {
 
           return {
             id: user._id.toString(),
-            identifier: user.email || user.username,
+            email: user.email,
+            username: user.username,
             role: user.role,
           };
         } catch (error) {
@@ -53,9 +50,15 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        // 'user' can be either our User model or an AdapterUser; check before accessing role
+        // Add email and username to token
+        if ("email" in user) {
+          token.email = user.email;
+        }
+        if ("username" in user) {
+          token.username = user.username;
+        }
         if ("role" in user) {
-          token.role = (user as UserWithRole).role;
+          token.role = user.role;
         }
       }
       return token;
@@ -64,6 +67,8 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         session.user.id = token.id as string;
         session.user.role = token.role as string;
+        session.user.email = token.email as string;
+        session.user.username = token.username as string;
       }
       return session;
     },
