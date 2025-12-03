@@ -39,8 +39,10 @@ export default async function AdminLayout({
             Seller
           </h1>
         </div>
-        <div className="flex items-center space-x-2">
-          <h1 className="text-base font-semibold text-green-700">{email}</h1>
+        <div className="flex items-center space-x-3">
+          <h1 className="text-base font-semibold text-black bg-gray-200 px-2 py-0.5 rounded-md">
+            {email}
+          </h1>
           <Logout path={"/seller"} />
         </div>
       </header>

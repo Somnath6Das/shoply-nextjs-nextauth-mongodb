@@ -107,8 +107,10 @@ export default async function OrdersPage() {
     <div className="max-w-6xl mx-auto p-6">
       <div className="flex justify-between items-start mb-6">
         <h1 className="text-3xl font-bold">My Orders</h1>
-        <div className="flex items-center space-x-2">
-          <h1 className="text-lg font-semibold text-green-700">{email}</h1>
+        <div className="flex items-center space-x-3">
+          <h1 className="text-base font-semibold text-black bg-gray-200 px-2 py-0.5 rounded-md">
+            {email}
+          </h1>
           <Logout path="/" />
         </div>
       </div>
