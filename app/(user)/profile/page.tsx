@@ -42,7 +42,7 @@ export default async function OrdersPage() {
   const session = await getServerSession(authOptions);
   const email = session?.user?.email;
   if (!session?.user?.id) {
-    redirect("/auth/signin");
+    return;
   }
 
   let orders: SerializedOrder[] = [];
