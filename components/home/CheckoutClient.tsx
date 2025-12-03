@@ -1,10 +1,10 @@
 "use client";
 
-import { placeOrder } from "@/app/actions/placeOrder";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { placeOrder } from "@/app/actions/placeOrder";
 type SellerName = string | undefined;
 export default function CheckoutClient({
   item,
@@ -34,6 +34,15 @@ export default function CheckoutClient({
       sellerId: item.sellerId,
       qty: item.qty,
       price: item.price,
+      combination: item.combination,
+      itemName: item.name,
+      image: item.images[0],
+      address: {
+        name: address.name,
+        location: address.location,
+        pin: address.pin,
+        phone: address.phone,
+      },
     });
 
     setLoading(false);

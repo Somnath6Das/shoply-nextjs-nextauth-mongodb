@@ -1,45 +1,70 @@
 "use server";
 
-import { connectToDatabase } from "@/lib/db";
-import Order from "@/models/Order";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { Types } from "mongoose";
+import { connectToDatabase } from "@/lib/db";
+import Order from "@/models/Order";
 
-export async function placeOrder(data: {
+interface PlaceOrderInput {
   productId: string;
   variantId: string;
   sellerId: string;
   qty: number;
   price: number;
-}) {
+  combination: Record<string, string>;
+  itemName: string;
+  image: string;
+  address: {
+    name: string;
+    location: string;
+    pin: string;
+    phone: string;
+  };
+}
+
+export async function placeOrder(data: PlaceOrderInput) {
   try {
     await connectToDatabase();
 
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return { error: "You must be signed in" };
+      return { success: false, error: "Not authenticated" };
     }
 
-    const userId = session?.user.id;
+    const totalAmount = data.price * data.qty;
 
     const order = await Order.create({
-      userId,
+      userId: session.user.id,
+      sellerId: data.sellerId,
       items: [
         {
-          productId: new Types.ObjectId(data.productId),
-          variantId: new Types.ObjectId(data.variantId),
-          sellerId: new Types.ObjectId(data.sellerId),
+          productId: data.productId,
+          variantId: data.variantId,
+
+          ItemName: data.itemName,
+          image: data.image,
           quantity: data.qty,
           price: data.price,
+          combination: data.combination,
         },
       ],
-      totalAmount: data.qty * data.price,
+      address: [data.address],
+      totalAmount,
+      status: "pending",
     });
 
-    return { success: true, orderId: order._id.toString() };
-  } catch (error) {
-    console.error("Order error:", error);
-    return { error: "Failed to place order" };
+    // Convert Mongoose document to plain object
+    const plainOrder = {
+      _id: order._id.toString(),
+      userId: order.userId.toString(),
+      totalAmount: order.totalAmount,
+      status: order.status,
+      createdAt: order.createdAt.toISOString(),
+    };
+
+    return { success: true, order: plainOrder };
+  } catch (err: any) {
+    console.error("Order creation error:", err);
+    return { success: false, error: err.message || "Failed to place order" };
   }
 }

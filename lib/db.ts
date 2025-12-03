@@ -14,6 +14,7 @@ if (!cached) {
 }
 
 export async function connectToDatabase() {
+  if (mongoose.connection.readyState === 1) return;
   if (cached.conn) return cached.conn;
 
   if (!cached.promise) {
