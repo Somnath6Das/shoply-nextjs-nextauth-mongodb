@@ -6,6 +6,7 @@ const OrderItemSchema = new Schema({
 
   ItemName: { type: String, required: true },
   image: String,
+  deliveryInDays: { type: String, required: true },
   quantity: { type: Number, required: true },
   price: { type: Number, required: true },
   combination: {

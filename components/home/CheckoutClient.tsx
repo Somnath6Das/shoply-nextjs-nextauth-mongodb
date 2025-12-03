@@ -32,6 +32,7 @@ export default function CheckoutClient({
       productId: item.productId,
       variantId: item.variantId,
       sellerId: item.sellerId,
+      deliveryInDays: item.deliveryInDays,
       qty: item.qty,
       price: item.price,
       combination: item.combination,

@@ -22,7 +22,7 @@ const Logout = ({ path }: { path: string }) => {
     <button
       onClick={handleLogout}
       disabled={loading}
-      className={`px-5 py-2 text-sm font-medium text-white rounded-lg bg-black hover:bg-gray-800 transition ${
+      className={`px-5 py-2  text-sm font-medium text-white rounded-lg bg-black hover:bg-gray-800 transition h-10 ${
         loading ? "opacity-60 cursor-not-allowed" : ""
       }`}
     >

@@ -9,6 +9,7 @@ interface PlaceOrderInput {
   productId: string;
   variantId: string;
   sellerId: string;
+  deliveryInDays: string;
   qty: number;
   price: number;
   combination: Record<string, string>;
@@ -40,9 +41,10 @@ export async function placeOrder(data: PlaceOrderInput) {
         {
           productId: data.productId,
           variantId: data.variantId,
-
+          deliveryInDays: data.deliveryInDays,
           ItemName: data.itemName,
           image: data.image,
+
           quantity: data.qty,
           price: data.price,
           combination: data.combination,
