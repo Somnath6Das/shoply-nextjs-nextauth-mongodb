@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
 interface OrderItem {
@@ -161,12 +162,14 @@ export default function OrderCard({ order }: OrderCardProps) {
           <div key={item._id} className={index > 0 ? "mt-6 pt-6 border-t" : ""}>
             <div className="flex gap-4">
               <div className="relative w-24 h-24 shrink-0">
-                <Image
-                  src={item.image}
-                  alt={item.ItemName}
-                  fill
-                  className="object-contain rounded"
-                />
+                <Link href={`/product/${item.productId}`}>
+                  <Image
+                    src={item.image}
+                    alt={item.ItemName}
+                    fill
+                    className="object-contain rounded hover:border hover:border-blue-400"
+                  />
+                </Link>
               </div>
               <div className="flex-1">
                 <h3 className="font-semibold text-lg mb-1">{item.ItemName}</h3>
