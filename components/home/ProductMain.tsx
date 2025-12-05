@@ -3,6 +3,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
+import { addToCart } from "@/app/actions/cartActions";
 
 type ProductRaw = any;
 
@@ -170,11 +171,25 @@ export default function ProductMain({
       alert("Please select a valid variant");
       return;
     }
-    // Implement your add to cart API call here.
-    // Example: POST /api/cart { variantId, qty }
-    alert(
-      `Added ${quantity} of variant ${selectedVariant._id} to cart (implement API)`
-    );
+
+    const result = await addToCart({
+      productId: product._id,
+      variantId: selectedVariant._id,
+      quantity,
+      price: selectedVariant.price,
+      combination: selectedVariant.combination,
+      itemName: product.name,
+      image: selectedVariant.images[0] || product.allImages[0],
+      sellerId: product.sellerId,
+      deliveryInDays: product.deliveryInDays,
+      stock: selectedVariant.stock,
+    });
+
+    if (result.success) {
+      alert("Item added to cart!");
+    } else {
+      alert(result.error || "Failed to add to cart");
+    }
   };
 
   return (
