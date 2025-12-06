@@ -14,7 +14,7 @@ export default async function CartPage() {
 
   const result = await getCart();
 
-  if (!result.success) {
+  if (!result.success || !result.cart) {
     return (
       <div className="p-10 text-center">
         <p className="text-red-600">{result.error || "Failed to load cart"}</p>
