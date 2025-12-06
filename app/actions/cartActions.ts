@@ -178,7 +178,10 @@ export async function getCart() {
         variantId: item.variantId.toString(),
         quantity: item.quantity,
         price: item.price,
-        combination: Object.fromEntries(item.combination),
+        combination:
+          item.combination instanceof Map
+            ? Object.fromEntries(item.combination)
+            : item.combination || {},
         itemName: item.itemName,
         image: item.image,
         sellerId: item.sellerId.toString(),
@@ -186,7 +189,6 @@ export async function getCart() {
         stock: item.stock,
       })),
     };
-
     return { success: true, cart: plainCart };
   } catch (err: any) {
     console.error("Get cart error:", err);
@@ -211,5 +213,104 @@ export async function clearCart() {
   } catch (err: any) {
     console.error("Clear cart error:", err);
     return { success: false, error: err.message || "Failed to clear cart" };
+  }
+}
+// app/actions/placeCartOrder.ts
+
+import Order from "@/models/Order";
+
+interface CartItem {
+  productId: string;
+  variantId: string;
+  quantity: number;
+  price: number;
+  combination: Record<string, string>;
+  itemName: string;
+  image: string;
+  sellerId: string;
+  deliveryInDays: number;
+}
+
+interface PlaceCartOrderInput {
+  items: CartItem[];
+  address: {
+    name: string;
+    location: string;
+    pin: string;
+    phone: string;
+  };
+}
+
+export async function placeCartOrder(data: PlaceCartOrderInput) {
+  try {
+    await connectToDatabase();
+
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+      return { success: false, error: "Not authenticated" };
+    }
+
+    if (!data.items || data.items.length === 0) {
+      return { success: false, error: "Cart is empty" };
+    }
+
+    // Group items by seller
+    const itemsBySeller = data.items.reduce((acc, item) => {
+      if (!acc[item.sellerId]) {
+        acc[item.sellerId] = [];
+      }
+      acc[item.sellerId].push(item);
+      return acc;
+    }, {} as Record<string, CartItem[]>);
+
+    // Create separate orders for each seller
+    const orders = [];
+
+    for (const [sellerId, sellerItems] of Object.entries(itemsBySeller)) {
+      const totalAmount = sellerItems.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+      );
+
+      const order = await Order.create({
+        userId: session.user.id,
+        sellerId,
+        items: sellerItems.map((item) => ({
+          productId: item.productId,
+          variantId: item.variantId,
+          deliveryInDays: item.deliveryInDays.toString(),
+          ItemName: item.itemName,
+          image: item.image,
+          quantity: item.quantity,
+          price: item.price,
+          combination: item.combination,
+        })),
+        address: [data.address],
+        totalAmount,
+        status: "pending",
+      });
+
+      orders.push({
+        _id: order._id.toString(),
+        sellerId: order.sellerId.toString(),
+        totalAmount: order.totalAmount,
+        status: order.status,
+      });
+    }
+
+    // Clear the cart after successful order
+    await Cart.findOneAndUpdate({ userId: session.user.id }, { items: [] });
+
+    revalidatePath("/cart");
+    revalidatePath("/profile");
+
+    return {
+      success: true,
+      orders,
+      message: `${orders.length} order(s) placed successfully`,
+    };
+  } catch (err: any) {
+    console.error("Cart order creation error:", err);
+    return { success: false, error: err.message || "Failed to place order" };
   }
 }
