@@ -20,7 +20,7 @@ export default async function AdminLayout({
     // Layout takes full height and prevents layout scrolling
     <div className="h-screen flex flex-col overflow-hidden bg-gray-50">
       {/* HEADER (fixed) */}
-      <header className="flex-none flex justify-between items-center px-6 py-4 bg-white shadow-md">
+      <header className="flex-none flex justify-between items-center px-6 py-4 bg-white shadow-md ">
         <div className="flex items-center gap-3">
           <Image
             src="/images/logo.png"
@@ -33,12 +33,20 @@ export default async function AdminLayout({
           <h1 className="text-lg font-semibold text-green-600 tracking-wide">
             Admin
           </h1>
+        </div>
+        <div className="flex items-center space-x-2">
+          <Image
+            src={"/images/user.png"}
+            alt="user"
+            width={30}
+            height={30}
+            className="object-contain"
+          />
           <h1 className="text-base font-semibold text-green-600 bg-gray-200 px-1 py-0.5 rounded-md">
             {username}
           </h1>
+          <Logout path={"/admin"} />
         </div>
-
-        <Logout path={"/admin"} />
       </header>
 
       {/* BODY */}

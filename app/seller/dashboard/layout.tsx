@@ -40,6 +40,13 @@ export default async function AdminLayout({
           </h1>
         </div>
         <div className="flex items-center space-x-3">
+          <Image
+            src={"/images/user.png"}
+            alt="user"
+            width={30}
+            height={30}
+            className="object-contain"
+          />
           <h1 className="text-base font-semibold text-black bg-gray-200 px-2 py-0.5 rounded-md">
             {email}
           </h1>

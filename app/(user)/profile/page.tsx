@@ -5,6 +5,7 @@ import Order from "@/models/Order";
 import { redirect } from "next/navigation";
 import OrderCard from "@/components/home/OrderCard";
 import Logout from "@/components/Logout";
+import Image from "next/image";
 
 interface OrderItem {
   productId: string;
@@ -108,6 +109,13 @@ export default async function OrdersPage() {
       <div className="flex justify-between items-start mb-6">
         <h1 className="text-3xl font-bold">My Orders</h1>
         <div className="flex items-center space-x-3">
+          <Image
+            src={"/images/user.png"}
+            alt="user"
+            width={30}
+            height={30}
+            className="object-contain"
+          />
           <h1 className="text-base font-semibold text-black bg-gray-200 px-2 py-0.5 rounded-md">
             {email}
           </h1>
