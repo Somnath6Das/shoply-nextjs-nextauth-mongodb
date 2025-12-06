@@ -254,37 +254,27 @@ export async function placeCartOrder(data: PlaceCartOrderInput) {
       return { success: false, error: "Cart is empty" };
     }
 
-    // Group items by seller
-    const itemsBySeller = data.items.reduce((acc, item) => {
-      if (!acc[item.sellerId]) {
-        acc[item.sellerId] = [];
-      }
-      acc[item.sellerId].push(item);
-      return acc;
-    }, {} as Record<string, CartItem[]>);
-
-    // Create separate orders for each seller
+    // Create separate order for EACH item (not grouped by seller)
     const orders = [];
 
-    for (const [sellerId, sellerItems] of Object.entries(itemsBySeller)) {
-      const totalAmount = sellerItems.reduce(
-        (sum, item) => sum + item.price * item.quantity,
-        0
-      );
+    for (const item of data.items) {
+      const totalAmount = item.price * item.quantity;
 
       const order = await Order.create({
         userId: session.user.id,
-        sellerId,
-        items: sellerItems.map((item) => ({
-          productId: item.productId,
-          variantId: item.variantId,
-          deliveryInDays: item.deliveryInDays.toString(),
-          ItemName: item.itemName,
-          image: item.image,
-          quantity: item.quantity,
-          price: item.price,
-          combination: item.combination,
-        })),
+        sellerId: item.sellerId,
+        items: [
+          {
+            productId: item.productId,
+            variantId: item.variantId,
+            deliveryInDays: item.deliveryInDays.toString(),
+            ItemName: item.itemName,
+            image: item.image,
+            quantity: item.quantity,
+            price: item.price,
+            combination: item.combination,
+          },
+        ],
         address: [data.address],
         totalAmount,
         status: "pending",
