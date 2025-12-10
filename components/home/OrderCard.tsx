@@ -186,12 +186,6 @@ export default function OrderCard({ order }: OrderCardProps) {
                     ₹{item.price.toLocaleString()}
                   </span>
                 </div>
-                {item.deliveryInDays > 0 && (
-                  <p className="text-sm text-green-600 mt-1">
-                    Delivery in {item.deliveryInDays}{" "}
-                    {item.deliveryInDays === 1 ? "day" : "days"}
-                  </p>
-                )}
               </div>
             </div>
           </div>
