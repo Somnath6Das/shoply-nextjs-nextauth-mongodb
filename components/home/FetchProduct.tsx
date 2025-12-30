@@ -10,7 +10,7 @@ export default async function FetchProducts() {
   const data = await res.json();
 
   return (
-    <div className="p-6 bg-gray-50 flex flex-wrap gap-6 w-full h-screen relative">
+    <div className="p-6 bg-gray-50 flex flex-wrap gap-6 w-full h-full relative">
       {data.map((cat) => (
         <div
           key={cat.mainCategory}
